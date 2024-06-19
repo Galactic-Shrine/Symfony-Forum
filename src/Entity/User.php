@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Config\AvatarType;
 use App\Config\AvatarStyle;
+use App\Entity\ForumThread;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -76,6 +77,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         "Style" => AvatarStyle::Carre,
         "File" => null
     ];
+
+    // ***************************************
+    // Section Forum
+    // ***************************************
+    #[ORM\OneToOne(mappedBy: 'Author', cascade: ['persist', 'remove'])]
+    private ?ForumThread $ForumThread = null;
+    // ***************************************
+    // End Section Forum
+    // ***************************************
 
     // ***************************************
     // Section Linked Account Id
@@ -317,6 +327,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
         return $this;
     }
+
+    // ***************************************
+    // Section Forum
+    // ***************************************
+    public function getForumThread(): ?ForumThread
+    {
+        return $this->ForumThread;
+    }
+
+    public function setForumThread(ForumThread $ForumThread): static
+    {
+        // set the owning side of the relation if necessary
+        if ($ForumThread->getAuthor() !== $this) {
+            $ForumThread->setAuthor($this);
+        }
+
+        $this->ForumThread = $ForumThread;
+
+        return $this;
+    }
+    // ***************************************
+    // End Section Forum
+    // ***************************************
 
     // ***************************************
     // Section Linked Account Id
