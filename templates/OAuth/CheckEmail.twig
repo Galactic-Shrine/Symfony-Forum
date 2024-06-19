@@ -1,0 +1,19 @@
+{% extends './Partials/Base.twig' %}
+
+{% block title %}{{ "Title.PasswordResetEmailSent" | trans({}, 'OAuth') }}{% endblock %}
+
+{% block body %}
+    <section class="row justify-content-center mt-5 mb-3">
+        <section class="card text-bg-secondary" style="max-width: 45rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ "Title.PasswordResetEmailSent" | trans({}, 'OAuth') }}</h5>
+                <p class="card-text">
+                    {{ "Text.CheckEmail" | trans({}, 'OAuth') }}{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                </p>
+                <p class="card-footer">
+                    {{ "Text.NotReceivedEmail" | trans({'link': path('oauth_forgot_password_request')}, 'OAuth') | raw}}
+                </p>
+            </div>
+        </section>
+    </section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{# On Includ le template de base #}
+{% extends './Partials/BaseEmail.twig' %}
+
+{% block body %}
+			<img class="img-fluid mx-auto d-block" style="width: auto; max-height: 150px;" src="{{ absolute_url(asset('Images/Logo/3.3.1.png')) }}" />
+			<div class="card mt-2 p-6 p-lg-10 space-y-4">
+				<div class="card-body">
+					<h1 class="card-title">
+						{{ "Title.ConfirmationEmail" | trans ({}, 'Email') }}
+					</h1>
+					<p class="card-text">
+						{{ "Content.ConfirmationEmail" | trans ({
+								'ConfirmationEmail.Url': signedUrl|raw,
+								'ConfirmationEmail.Text': expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle'),
+							}, 'Email') | raw 
+						}}
+					</p>
+				</div>
+			</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

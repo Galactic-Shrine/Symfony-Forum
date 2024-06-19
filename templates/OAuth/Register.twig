@@ -1,0 +1,59 @@
+{% extends './Partials/Base.twig' %}
+
+{% block title %}{{ "Title.Register" | trans ({}, 'OAuth') }}{% endblock %}
+
+{% block body %}
+{{ form_start(registrationForm, {}) }}
+    {{ form_errors(registrationForm) }}
+<section class="row justify-content-center mt-5 mb-3">
+        <section class="card text-bg-secondary" style="max-width: 45rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ "Title.Registration" | trans ({}, 'OAuth') }}</h5>
+                <p class="card-text">
+                    {{ form_row(registrationForm.Email, { 
+                        translation_domain: 'OAuth',
+                        label: 'Label.Email',
+                        attr: {
+                            class: 'form-control rounded-3 mb-1 mt-1'
+                        }
+                    }) }}
+                    {{ form_row(registrationForm.UserName, { 
+                        translation_domain: 'OAuth',
+                        label: 'Label.UserName',
+                        attr: {
+                            class: 'form-control rounded-3 mb-1 mt-1'
+                        }
+                    }) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                        translation_domain: 'OAuth',
+                        label: 'Label.Password',
+                        attr: {
+                            class: 'form-control rounded-3 mb-1 mt-1',
+                            autocomplete: 'new-password'
+                        }
+                    }) }}
+                    {{ form_row(registrationForm.agreeTerms, { 
+                        translation_domain: 'OAuth',
+                        label: 'Label.agreeTerms',
+                        attr: {
+                            'class': 'checkbox mb-3'
+                        },
+                        constraints: {
+                            IsTrue: {
+                                message: 'You should agree to our terms.'
+                            }
+                        }
+                    }) }}
+                </p>
+                {{ form_row(registrationForm.Register, { 
+                    translation_domain: 'OAuth',
+                    label: 'Button.Register',
+                    attr: {
+                        class: 'btn btn-sm btn-secondary mb-2'
+                    }
+                }) }}
+            </div>
+        </section>
+</section>
+{{ form_end(registrationForm) }}
+{% endblock %}

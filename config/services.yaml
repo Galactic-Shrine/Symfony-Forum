@@ -4,10 +4,23 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app.locales: [de, en, es, fr, it, ja, th]
-    app.fallbacks: [en, fr, ja, de, es, it, th, ar]
-    app.supported_locales: '%app.locales%'
-    app.default_locale: '%kernel.default_locale%'
+    # Langage Parameters
+    app.locales:            [de, en, es, fr, it, ja, th]
+    app.fallbacks:          [en, fr, ja, de, es, it, th, ar]
+    app.supported_locales:  '%app.locales%'
+    app.default_locale:     '%kernel.default_locale%'
+    # Global Path Parameters
+    Path.Upload:            '%kernel.project_dir%/files/Uploads'
+    Path.Download:          '%kernel.project_dir%/files/Downloads'
+    Path.Gallery:           '%Path.Upload%/Gallery'
+    # Path Parameters
+    Path.D.App:             '%Path.Download%/Applications'
+    Path.D.Source:          '%Path.Download%/Sources'
+    Path.U.Forum:           '%Path.Upload%/Forums'
+    Path.U.User:            '%Path.Upload%/Users'
+    Path.U.G.Image:         '%Path.Gallery%/Images'
+    Path.U.G.Video:         '%Path.Gallery%/Videos'
+    Path.U.G.User:          '%Path.Gallery%/Users'
 
 services:
     # default configuration for services in *this* file

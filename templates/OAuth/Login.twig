@@ -1,0 +1,154 @@
+{# On Includ le template de base #}
+{% extends './Partials/Base.twig' %}
+
+{#
+    Liste des variable manuel
+    On Verifie que l'utilisateur est connecter
+#}
+{% if (app.User) %}
+
+    {% if (app.User.Detail is null) %}
+
+		{% set profileLink = app.User.UserName %}
+    {% else %}
+
+        {% if (app.User.Detail.Pseudo is not null) %}
+
+			{% set profileLink = app.User.Detail.Pseudo ~ "(" ~  app.User.UserName ~ ")" %}
+        {% endif %}
+    {% endif %}
+
+    {# 
+        Countdown redirection to profile 
+        variable: count
+        default: 4
+    #}
+    {% set count = 4 %}
+    {% set title = "Title.ProfileRedirection" | trans({}, 'OAuth') %}
+{% else %}
+
+    {% set title = "Title.LogIn" | trans({}, 'OAuth') %}
+{% endif %}
+
+{# Block du titre #}
+{% block title %}{{ title }}{% endblock %}
+
+{# Block des meta #}
+{% block meta %}{# On Verifie que l'utilisateur est connecter #}{% if app.user %}
+<meta http-equiv="refresh" content="{{ count }}; url={{ absolute_url(path('app_profile')) }}">
+{% endif %}
+{% endblock %}
+
+{# Block des javascripts #}
+{% block javascripts %}
+{{ parent() }}
+{% if app.user %}{# countdown redirection to profile #}
+        <script type="text/javascript">
+            var timeleft = {{ count }};
+            var countdownTimer = setInterval(
+                function() {
+                    timeleft--;
+                    document.getElementById("CrTp").textContent = timeleft;
+                    if(timeleft <= 0)
+                        clearInterval(countdownTimer);
+                },
+                1000
+            );
+        </script>
+{% endif %}
+{% endblock %}
+
+{# Block du body #}
+{% block body %}
+{# On Verifie que l'utilisateur est connecter #}
+{% if app.User %}
+<section class="row justify-content-center mt-5 mb-3">
+                <section class="card text-bg-primary text-center mb-3" style="max-width: 45rem;">
+                    <div class="card-header">{{ "Text.Redirection.Header" | trans ({}, 'OAuth') }}</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ "Text.Redirection.Title" | trans ({}, 'OAuth') }}</h5>
+                        <p class="card-text">
+                            {{ "Text.Redirection.Profile.Content" | trans ({
+                                    'ProfileLink': path('app_profile'),
+                                    'ProfileName': profileLink,
+                                    'LogoutLink': path('oauth_logout'),
+                                    'Count': count
+                                }, 'OAuth') | raw 
+                            }}
+                        </p>
+                    </div>
+                </section>
+            </section>
+{# On Verifie que l'utilisateur est connecter sinon #}
+{% else %}
+<form class="form-signin row justify-content-center" action="{{ path('oauth_login') }}" method="post">
+{# On affiche les erreur #}
+{% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+            <div class="card text-bg-secondary" style="max-width: 45rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ "Title.Login" | trans ({}, 'OAuth') }}</h5>
+                    <p class="card-text">
+                        <label for="inputEmail">
+                        {{ "Label.Identifier" | trans ({}, 'OAuth') }}
+                        </label>
+                        <input type="string" value="{{ last_username }}" name="Email" id="inputEmail" class="form-control rounded-3 mb-3 mt-1" placeholder="{{ "Input.placeholder.EmailOrUserName" | trans ({}, 'OAuth') }}" required autofocus>
+                        <label for="inputPassword">
+                            {{ "Label.Password" | trans ({}, 'OAuth') }}
+                        </label>
+                        <input type="Password" name="Password" id="inputPassword" class="form-control rounded-3 mb-3 mt-1" autocomplete="current-password" required>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me" checked> {{ "Button.RememberMe" | trans ({}, 'OAuth') }}
+                            </label>
+                        </div>
+
+                        <button class="btn btn-sm btn-success mb-2" type="submit">
+                            {{ "Button.SignIn" | trans ({}, 'OAuth') }}
+                        </button>
+
+                        <button class="btn btn-sm btn-danger mb-2" type="reset">
+                            {{ "Button.Reset.Form" | trans }}
+                        </button>
+
+                        <button class="btn btn-sm btn-warning mb-2" type="button" onclick="location.href='{{ absolute_url(path('oauth_forgot_password_request')) }}';">
+                            {{ "Button.PasswordForgotten" | trans ({}, 'OAuth') }}
+                        </button>
+                        
+                        <button class="btn btn-sm btn-info mb-2" type="button" onclick="location.href='{{ absolute_url(path('oauth_register')) }}';">
+                            {{ "Button.SignUp" | trans ({}, 'OAuth') }}
+                        </button>
+                    </p>
+                  </div>
+                </div>    
+                <hr class="my-3">            
+                <div style="max-width: 330px; margin: auto auto;">
+                    <h1 class="h4 mb-3 font-weight-normal">
+                        {{ "SubTitle.OrUseAThirParty" | trans ({}, 'OAuth') }}
+                    </h1>
+                    {#<div class="btn btn-outline-light mt-2 mb-2">
+                        <a class="nav-link" href="{{ absolute_url(path('oauth_github_login')) }}"><svg class="bi me-1" width="16" height="16"><use xlink:href="#github"></use></svg>{{ "SignInWith" | trans ({'%name%': 'Github'}) | escape }}</a>
+                    </div>
+                    <br>
+                    <div class="btn btn-outline-info mt-2 mb-2">
+                        <a class="nav-link" href="{{ absolute_url(path('oauth_github_login')) }}"><svg class="bi me-1" width="16" height="16"><use xlink:href="#twitter"></use></svg>{{ "SignInWith" | trans ({'%name%': 'Twitter'}) | raw }}</a>
+                    </div>
+                    <br>
+                    <div class="btn btn-outline-blue mt-2 mb-2">
+                        <a class="nav-link" href="{{ absolute_url(path('oauth_github_login')) }}"><svg class="bi me-1" width="16" height="16"><use xlink:href="#facebook"></use></svg>{{ "SignInWith" | trans ({'%name%': 'Facebook'}) }}</a>
+                    </div>
+                    <br>
+                    <div class="btn btn-outline-danger mt-2 mb-2">
+                        <a class="nav-link" href="{{ absolute_url(path('oauth_github_login')) }}"><svg class="bi me-1" width="16" height="16"><use xlink:href="#youtube"></use></svg>{{ "SignInWith" | trans ({'%name%': 'Youtube'}) }}</a>
+                    </div>
+                    <br>
+                    <div class="btn btn-outline-light mt-2 mb-2">
+                        <a class="nav-link" href="{{ absolute_url(path('oauth_github_login')) }}"><svg class="bi me-1" width="16" height="16"><use xlink:href="#twitch"></use></svg>{{ "SignInWith" |trans({'%name%': 'Twitch'}) }}</a>
+                    </div>#}
+                </div>
+            </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="{{ absolute_url(asset('Css/Bootstrap/bootstrap.css')) }}">
+  </head>
+	<body class="bg-dark">
+	  <div class="container">
+			{% block body %}
+			{% endblock %}
+			{% block footer %}
+			{#<img class="ax-center mt-10 w-40" src="{{ absolute_url(asset('Images/Logo/1.3.2.png')) }}" />
+	    <div class="text-muted text-center my-6">
+	      Sent with <3 from Hip Corp. <br>
+	      Hip Corp. 1 Hip Street<br>
+	      Gnarly State, 01234 USA <br>
+	    </div>#}
+			{% endblock %}
+	  </div>
+		<footer class="footer mt-auto d-flex flex-wrap justify-content-between align-items-center py-3 bg-dark">
+			<div class="col-md-7 d-flex align-items-center">
+				<span class="ms-3">
+					© 2019-{{ "now"|date("Y") }}, Galactic-Shrine - {{ "Text.Footer.Copyright" | trans }}
+				</span>
+			</div>
+		</footer>
+	</body>
+</html>

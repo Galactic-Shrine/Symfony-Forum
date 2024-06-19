@@ -1,4 +1,4 @@
-{% extends 'base.twig' %}
+{% extends './Partials/Base.twig' %}
 
 {% block title %}Hello MainController!{% endblock %}
 
@@ -9,12 +9,12 @@
 		</style>
 
 		<div class="example-wrapper">
-			<h1>Hello ! ✅</h1>
+			<h1>Hello ! {{ controller_name }} ✅</h1>
 
 			This friendly message is coming from:
 			<ul>
-				<li>Your controller at <code><a href="{{ 'E:/Symfony-Forum/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-				<li>Your template at <code><a href="{{ 'E:/Symfony-Forum/templates/main/index.twig'|file_link(0) }}">templates/main/index.twig</a></code></li>
+				<li>Your controller at <code><a href="{{ './src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
+				<li>Your template at <code><a href="{{ './templates/index.twig'|file_link(0) }}">templates/index.twig</a></code></li>
 			</ul>
 		</div>
 {% endblock %}

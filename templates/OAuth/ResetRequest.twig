@@ -1,0 +1,34 @@
+{% extends './Partials/Base.twig' %}
+
+{% block title %}{{ "Title.ResetYourPassword" | trans({}, 'OAuth') }}{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {{ form_start(requestForm) }}
+    <section class="row justify-content-center mt-5 mb-3">
+        <section class="card text-bg-secondary" style="max-width: 45rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ "Title.ResetYourPassword" | trans({}, 'OAuth') }}</h5>
+                <p class="card-text">
+                    <div>
+                        <small>
+                            {{ "Text.Reset.EnterYourEmailAddress" | trans({}, 'OAuth') }}
+                        </small>
+                        {{ form_row(requestForm.Email, { 
+                            attr: {
+                                class: 'form-control rounded-3 mb-1 mt-1'
+                            }
+                        }) }}
+                    </div>
+                </p>
+            </div>
+            <div class="card-footer"></div>
+            <button class="btn btn-primary">{{ "Button.SendPasswordResetEmail" | trans({}, 'OAuth') }}</button>
+            <br>
+        </section>
+    </section>
+    {{ form_end(requestForm) }}
+{% endblock %}
