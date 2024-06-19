@@ -6,6 +6,7 @@ use App\Config\AvatarType;
 use App\Config\AvatarStyle;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -112,6 +113,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
     private \DateTimeImmutable $CreateAt;
+
+    // ***************************************
+    // Section Messenger
+    // ***************************************
+    /**
+     * @var Collection<Uuid, Messenger>
+     */
+    #[ORM\OneToMany(targetEntity: Messenger::class, mappedBy: 'Sender', orphanRemoval: true)]
+    private Collection $MessegerSent;
+
+    /**
+     * @var Collection<Uuid, Messenger>
+     */
+    #[ORM\OneToMany(targetEntity: Messenger::class, mappedBy: 'Recipient', orphanRemoval: true)]
+    private Collection $MessegerReceived;
+    // ***************************************
+    // End Section Messenger
+    // ***************************************
 
     public function __construct() {
     
@@ -269,6 +288,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
+    // ***************************************
+    // Section Forum
+    // ***************************************
+    public function getSignature(): ?string
+    {
+        return $this->Signature;
+    }
+
+    public function setSignature(?string $Signature): static
+    {
+        $this->Signature = $Signature;
+
+        return $this;
+    }
+    // ***************************************
+    // End Section Forum
+    // ***************************************
+
     public function getPicture(): ?array
     {
         return $this->Picture;
@@ -416,4 +453,70 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     
         return (string) $this->Email;
     }
+
+    // ***************************************
+    // Section Messenger
+    // ***************************************
+    /**
+     * @return Collection<Uuid, Messenger>
+     */
+    public function getMessegerSent(): Collection
+    {
+        return $this->MessegerSent;
+    }
+
+    public function addMessegerSent(Messenger $messegerSent): static
+    {
+        if (!$this->MessegerSent->contains($messegerSent)) {
+            $this->MessegerSent->add($messegerSent);
+            $messegerSent->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessegerSent(Messenger $messegerSent): static
+    {
+        if ($this->MessegerSent->removeElement($messegerSent)) {
+            // set the owning side to null (unless already changed)
+            if ($messegerSent->getSender() === $this) {
+                $messegerSent->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<Uuid, Messenger>
+     */
+    public function getMessegerReceived(): Collection
+    {
+        return $this->MessegerReceived;
+    }
+
+    public function addMessegerReceived(Messenger $messegerReceived): static
+    {
+        if (!$this->MessegerReceived->contains($messegerReceived)) {
+            $this->MessegerReceived->add($messegerReceived);
+            $messegerReceived->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessegerReceived(Messenger $messegerReceived): static
+    {
+        if ($this->MessegerReceived->removeElement($messegerReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($messegerReceived->getRecipient() === $this) {
+                $messegerReceived->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+    // ***************************************
+    // End Section Messenger
+    // ***************************************
 }
