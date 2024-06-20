@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Config\AvatarType;
-use App\Config\AvatarStyle;
 use App\Entity\ForumThread;
+use App\Entity\UserStatus;
+use App\Enum\AvatarType;
+use App\Enum\AvatarStyle;
+use App\Enum\UserStatus as StatusEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,6 +49,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
     #[ORM\Column(type: 'json')]
     private array $Roles = ['ROLE_USER'];
+
+    // ***************************************
+    // Section Status
+    // ***************************************
+    #[ORM\OneToOne(mappedBy: 'User', cascade: ['persist', 'remove'])]
+    private $Status;
+    // ***************************************
+    // End Section Status
+    // ***************************************
 
     /**
      * @var string The hashed password
@@ -249,6 +260,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         
         return $this;
     }
+
+    // ***************************************
+    // Section Status
+    // ***************************************
+    public function getStatus(): ?UserStatus {
+
+        return $this->Status;
+    }
+
+    public function setStatus(UserStatus $Status): self {
+
+        if ($Status->getUser() !== $this) {
+
+            $Status->setUser($this);
+        }
+
+        $this->Status = $Status;
+
+        return $this;
+    }
+
+    public function getStatusEnum(): ?StatusEnum {
+
+        return $this->Status ? $this->Status->getStatus() : null;
+    }
+
+    public function setStatusEnum(StatusEnum $statusEnum): self {
+
+        if ($this->Status) {
+
+            $this->Status->setStatus($statusEnum);
+        } 
+        else {
+            
+            $userStatus = new UserStatus();
+            $userStatus->setUser($this);
+            $userStatus->setStatus($statusEnum);
+            $this->Status = $userStatus;
+        }
+
+        return $this;
+    }
+    // ***************************************
+    // End Section Status
+    // ***************************************
 
     /**
      * @see PasswordAuthenticatedUserInterface

@@ -27,7 +27,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+        bind:
+            $defaultLocale: 'en'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -39,3 +40,25 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+              
+    # Register the UserStatusService
+    App\Service\UserStatusService:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+
+    # Register the UserLocationService
+    App\Service\UserLocationService:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $requestStack: '@request_stack'
+
+    App\EventSubscriber\LocaleSubscriber:
+        arguments:
+            $defaultLocale: 'en'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    # Register the event listener for user location
+    #App\EventListener\UserLocationListener:
+    #    tags:
+    #        - { name: 'kernel.event_listener', event: 'kernel.controller', method: 'onKernelController' }
