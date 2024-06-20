@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Service\UserStatusService;
-use App\Enum\UserStatus as StatusEnum;
+use App\Enum\UserStatus as UserStatusEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,8 +35,8 @@ class UserController extends AbstractController
         $user = $this->getUser(); // assuming you have user authentication setup
         $status = $request->get('status');
 
-        if (in_array($status, StatusEnum::cases())) {
-            $userStatusService->updateStatus($user, StatusEnum::from($status));
+        if (in_array($status, UserStatusEnum::cases())) {
+            $userStatusService->updateStatus($user, UserStatusEnum::from($status));
             return $this->json(['status' => 'success']);
         }
 

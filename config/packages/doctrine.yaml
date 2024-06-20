@@ -1,14 +1,14 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-        types:
-            user_status: App\Enum\UserStatus # Register your custom enum type here if needed
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '16'
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            user_status: App\Enum\UserStatus # Register your custom enum type here if needed
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
