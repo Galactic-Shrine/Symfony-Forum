@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     # Langage Parameters
-    app.locales:            [de, en, es, fr, it, ja, th]
-    app.fallbacks:          [en, fr, ja, de, es, it, th, ar]
+    app.locales:            [de, en, es, fr, it, ja, th, zh-Hans, zh-Hant]
+    app.fallbacks:          [en, fr, ja, de, es, it, th, ar, zh-Hans, zh-Hant]
     app.supported_locales:  '%app.locales%'
     app.default_locale:     '%kernel.default_locale%'
     # Global Path Parameters
@@ -28,7 +28,7 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            $defaultLocale: 'en'
+            $defaultLocale: '%kernel.default_locale%'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -52,13 +52,16 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $requestStack: '@request_stack'
 
+    # Register the event listener for user location
+    App\EventListener\UserLocationListener:
+        arguments:
+            $security: '@security.helper'
+            $userLocationService: '@App\Service\UserLocationService'
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.controller', method: 'onKernelController' }
+    
     App\EventSubscriber\LocaleSubscriber:
         arguments:
-            $defaultLocale: 'en'
+            $defaultLocale: '%kernel.default_locale%'
         tags:
             - { name: 'kernel.event_subscriber' }
-
-    # Register the event listener for user location
-    #App\EventListener\UserLocationListener:
-    #    tags:
-    #        - { name: 'kernel.event_listener', event: 'kernel.controller', method: 'onKernelController' }

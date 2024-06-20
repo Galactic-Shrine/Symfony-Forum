@@ -6,25 +6,25 @@ use App\Service\UserLocationService;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\Security\Core\Security;
 
-class UserLocationListener {
+class UserLocationListener
+{
+    private Security $security;
+    private UserLocationService $userLocationService;
 
-    private $Security;
-    private $UserLocationService;
-
-    public function __construct(Security $security, UserLocationService $userLocationService) {
-        
-        $this->Security = $security;
-        $this->UserLocationService = $userLocationService;
+    public function __construct(Security $security, UserLocationService $userLocationService)
+    {
+        $this->security = $security;
+        $this->userLocationService = $userLocationService;
     }
 
-    public function onKernelController(ControllerEvent $Event) {
+    public function onKernelController(ControllerEvent $event): void
+    {
+        $user = $this->security->getUser();
 
-        $User = $this->Security->getUser();
-        if ($User) {
-
-            $Controller = get_class($Event->getController()[0]);
-            $Action = $Event->getController()[1];
-            $this->UserLocationService->updateLocation($User, $Controller, $Action);
+        if ($user) {
+            $controller = get_class($event->getController()[0]);
+            $action = $event->getController()[1];
+            $this->userLocationService->updateLocation($user, $controller, $action);
         }
     }
 }

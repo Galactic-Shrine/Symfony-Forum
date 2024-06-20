@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\UserStatus;
-use App\Enum\UserStatus as StatusEnum;
+use App\Enum\UserStatus as UserStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserStatusService {
@@ -16,7 +16,7 @@ class UserStatusService {
         $this->entityManager = $entityManager;
     }
 
-    public function updateStatus(User $user, StatusEnum $status): void {
+    public function updateStatus(User $user, UserStatusEnum $status): void {
 
         $user->setStatusEnum($status);
 
