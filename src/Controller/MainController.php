@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController, Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\{Request, Response};
+use App\Service\ConfigService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request; 
+use Symfony\Component\HttpFoundation\Response;
 
 #[Route(name: 'app_')]
 class MainController extends AbstractController {
 	
 	protected string $LocaleVars;
+	protected ConfigService $configService;
 
 	public function __construct() {
 
@@ -17,6 +21,10 @@ class MainController extends AbstractController {
 
 	#[Route(['/Index', '/index'], name: 'index')]
 	public function index(): Response {
+
+		/* exemple configService:
+
+		$someConfigValue = $this->configService->getConfigValue('Site_Name');*/
 		
 		return $this->render('Index.twig', ['controller_name' => 'MainController',]);
 	}

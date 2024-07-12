@@ -7,7 +7,7 @@ import CanvasConfetti from 'canvas-confetti';
  * which should already be in your base.html.twig.
  * bootstrap/dist/css/bootstrap.min.css
  */
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert } from 'bootstrap';
 
 document.body.addEventListener('click', () => {

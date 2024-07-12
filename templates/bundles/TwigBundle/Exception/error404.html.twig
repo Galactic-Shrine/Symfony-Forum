@@ -1,0 +1,12 @@
+{% extends './Partials/Base.twig' %}
+
+{% trans_default_domain 'Error' %}
+
+{% block title %}{{ status_code }} {{ "PageNotFound" | trans }}{% endblock %}
+
+{% block body %}
+  <h1 class="text-center">{{ "PageNotFound" | trans }}</h1>
+  <center>
+    <img class="text-center" src="{{ absolute_url(asset('Images/Error/404.png')) }}" alt="{{ status_code }}" />
+  </center>
+{% endblock %}

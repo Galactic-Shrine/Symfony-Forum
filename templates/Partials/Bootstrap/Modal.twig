@@ -1,0 +1,24 @@
+<div class="modal fade" id="translateModal" tabindex="-1" aria-labelledby="translateModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5" id="translateModalLabel"></h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" style="height: 340px; padding: 0; background-image: url({{ absolute_url(asset('images/Worldmap_location.svg')) }}); background-size: contain; background-repeat: no-repeat;">
+				<div class="container-fluid mt-2">
+		      	  <div class="row align-items-center">
+{% for locale in locales %}
+{% if locale == app.request.locale %}{% set IsActive = " active" %}{% else %}{% set IsActive = null %}{% endif %}
+                    <div class="col-md-3">
+                      <a class="link-offset-2 link-underline link-underline-opacity-0{{IsActive}}" href="{{ absolute_url(path('app_change_locale', {"locale": locale})) }}">
+												{{ locale | language_name(locale) }}
+                      </a>
+                    </div>
+{% endfor %}
+                  </div>
+                </div>
+              </div>
+		    </div>
+		  </div>
+		</div>

@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
-use App\Entity\ForumThread;
-use App\Entity\UserStatus;
 use App\Enum\AvatarType;
 use App\Enum\AvatarStyle;
-use App\Enum\UserStatus as UserStatusEnum;
+use App\Entity\ForumThread;
+use App\Enum\UserStatus;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,8 +18,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['Email'], message: 'Cet e-mail existe déjà au sein de l\'application.')]
-#[UniqueEntity(fields: ['UserName'], message: 'Ce nom d\'utilisateur existe déjà au sein de l\'application.')]
+#[UniqueEntity('Email', 'C\'est e-mail existe déjà au sein de l\'application.')]
+#[UniqueEntity('UserName', 'Ce nom d\'utilisateur existe déjà au sein de l\'application.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
     #[ORM\Id]
@@ -50,14 +49,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\Column(type: 'json')]
     private array $Roles = ['ROLE_USER'];
 
-    // ***************************************
-    // Section Status
-    // ***************************************
-    #[ORM\OneToOne(mappedBy: 'User', cascade: ['persist', 'remove'])]
-    private UserStatus $Status;
-    // ***************************************
-    // End Section Status
-    // ***************************************
+    #[ORM\OneToOne(targetEntity: UserPresence::class, mappedBy: 'User', cascade: ['persist', 'remove'])]
+    private UserPresence $Presence;
 
     /**
      * @var string The hashed password
@@ -154,15 +147,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     // ***************************************
 
     public function __construct() {
-    
-        $this->CreateAt = new \DateTimeImmutable;
-        $this->MessegerSent = new ArrayCollection();
-        $this->MessegerReceived = new ArrayCollection();
+
+        $this->Presence = new UserPresence();
+        $this->Presence->setUser($this)->setStatus(UserStatus::ONLINE);
         $this->Picture = [
             "Type" => AvatarType::GrAvatar,
             "Style" => AvatarStyle::Square,
             "File" => null
         ];
+        $this->MessegerSent = new ArrayCollection();
+        $this->MessegerReceived = new ArrayCollection();
+        $this->CreateAt = new \DateTimeImmutable;
     }
 
     public function getId(): ?Uuid {
@@ -182,25 +177,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function getPseudo(): ?string
-    {
+    public function getPseudo(): ?string {
+
         return $this->Pseudo;
     }
 
-    public function setPseudo(?string $Pseudo): static
-    {
+    public function setPseudo(?string $Pseudo): static {
+
         $this->Pseudo = $Pseudo;
 
         return $this;
     }
 
-    public function getLastName(): ?string
-    {
+    public function getLastName(): ?string {
+
         return $this->LastName;
     }
 
-    public function setLastName(?string $LastName): static
-    {
+    public function setLastName(?string $LastName): static {
+
         $this->LastName = $LastName;
 
         return $this;
@@ -211,8 +206,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return array_unique($this->FirstName);
     }
 
-    public function setFirstName(array $FirstName): static
-    {
+    public function setFirstName(array $FirstName): static {
+
         $this->FirstName = $FirstName;
 
         return $this;
@@ -230,13 +225,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function getMail(): ?array
-    {
+    public function getMail(): ?array {
+
         return $this->Mail;
     }
 
-    public function setMail(?array $Mail): static
-    {
+    public function setMail(?array $Mail): static {
+
         $this->Mail = $Mail;
 
         return $this;
@@ -261,50 +256,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    // ***************************************
-    // Section Status
-    // ***************************************
-    public function getStatus(): ?UserStatus {
+    public function getPresence(): ?UserPresence {
 
-        return $this->Status;
+        return $this->Presence;
     }
 
-    public function setStatus(UserStatus $Status): self {
+    public function setPresence(UserPresence $Presence): self {
 
-        if ($Status->getUser() !== $this) {
+        if ($Presence->getUser() !== $this) {
 
-            $Status->setUser($this);
+            $Presence->setUser($this);
         }
 
-        $this->Status = $Status;
-
+        $this->Presence = $Presence;
         return $this;
     }
-
-    public function getStatusEnum(): ?UserStatusEnum {
-
-        return $this->Status ? $this->Status->getStatus() : null;
-    }
-
-    public function setStatusEnum(UserStatusEnum $statusEnum): self {
-
-        if ($this->Status) {
-
-            $this->Status->setStatus($statusEnum);
-        } 
-        else {
-            
-            $userStatus = new UserStatus();
-            $userStatus->setUser($this);
-            $userStatus->setStatus($statusEnum);
-            $this->Status = $userStatus;
-        }
-
-        return $this;
-    }
-    // ***************************************
-    // End Section Status
-    // ***************************************
 
     /**
      * @see PasswordAuthenticatedUserInterface
@@ -330,25 +296,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         $this->plainPassword = null;
     }
 
-    public function getBirthday(): ?\DateTimeImmutable
-    {
+    public function getBirthday(): ?\DateTimeImmutable {
+
         return $this->Birthday;
     }
 
-    public function setBirthday(?\DateTimeImmutable $Birthday): static
-    {
+    public function setBirthday(?\DateTimeImmutable $Birthday): static {
+
         $this->Birthday = $Birthday;
 
         return $this;
     }
 
-    public function getUrl(): ?array
-    {
+    public function getUrl(): ?array {
+
         return $this->Url;
     }
 
-    public function setUrl(?array $Url): static
-    {
+    public function setUrl(?array $Url): static {
+
         $this->Url = $Url;
 
         return $this;
@@ -357,13 +323,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     // ***************************************
     // Section Forum
     // ***************************************
-    public function getSignature(): ?string
-    {
+    public function getSignature(): ?string {
+
         return $this->Signature;
     }
 
-    public function setSignature(?string $Signature): static
-    {
+    public function setSignature(?string $Signature): static {
+
         $this->Signature = $Signature;
 
         return $this;
@@ -372,13 +338,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     // End Section Forum
     // ***************************************
 
-    public function getPicture(): ?array
-    {
+    public function getPicture(): ?array {
+
         return $this->Picture;
     }
 
-    public function setPicture(?array $Picture): static
-    {
+    public function setPicture(?array $Picture): static {
+
         $this->Picture = $Picture;
 
         return $this;
@@ -387,13 +353,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     // ***************************************
     // Section Forum
     // ***************************************
-    public function getForumThread(): ?ForumThread
-    {
+    public function getForumThread(): ?ForumThread {
+
         return $this->ForumThread;
     }
 
-    public function setForumThread(ForumThread $ForumThread): static
-    {
+    public function setForumThread(ForumThread $ForumThread): static {
+
         // set the owning side of the relation if necessary
         if ($ForumThread->getAuthor() !== $this) {
             $ForumThread->setAuthor($this);
@@ -549,14 +515,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection<Uuid, Messenger>
      */
-    public function getMessegerSent(): Collection
-    {
+    public function getMessegerSent(): Collection {
+
         return $this->MessegerSent;
     }
 
-    public function addMessegerSent(Messenger $messegerSent): static
-    {
+    public function addMessegerSent(Messenger $messegerSent): static {
+
         if (!$this->MessegerSent->contains($messegerSent)) {
+
             $this->MessegerSent->add($messegerSent);
             $messegerSent->setSender($this);
         }
@@ -564,11 +531,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function removeMessegerSent(Messenger $messegerSent): static
-    {
+    public function removeMessegerSent(Messenger $messegerSent): static {
+
         if ($this->MessegerSent->removeElement($messegerSent)) {
+
             // set the owning side to null (unless already changed)
             if ($messegerSent->getSender() === $this) {
+
                 $messegerSent->setSender(null);
             }
         }
@@ -579,14 +548,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection<Uuid, Messenger>
      */
-    public function getMessegerReceived(): Collection
-    {
+    public function getMessegerReceived(): Collection {
+
         return $this->MessegerReceived;
     }
 
-    public function addMessegerReceived(Messenger $messegerReceived): static
-    {
+    public function addMessegerReceived(Messenger $messegerReceived): static {
+
         if (!$this->MessegerReceived->contains($messegerReceived)) {
+
             $this->MessegerReceived->add($messegerReceived);
             $messegerReceived->setRecipient($this);
         }
@@ -594,9 +564,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function removeMessegerReceived(Messenger $messegerReceived): static
-    {
+    public function removeMessegerReceived(Messenger $messegerReceived): static {
+
         if ($this->MessegerReceived->removeElement($messegerReceived)) {
+            
             // set the owning side to null (unless already changed)
             if ($messegerReceived->getRecipient() === $this) {
                 $messegerReceived->setRecipient(null);

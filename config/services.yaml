@@ -27,8 +27,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        bind:
-            $defaultLocale: '%kernel.default_locale%'
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -37,31 +36,28 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-              
-    # Register the UserStatusService
-    App\Service\UserStatusService:
-        arguments:
-            $entityManager: '@doctrine.orm.entity_manager'
 
-    # Register the UserLocationService
-    App\Service\UserLocationService:
+    App\Command\LoadDefaultConfigCommand:
         arguments:
-            $entityManager: '@doctrine.orm.entity_manager'
-            $requestStack: '@request_stack'
-
-    # Register the event listener for user location
-    App\EventListener\UserLocationListener:
-        arguments:
-            $security: '@security.helper'
-            $userLocationService: '@App\Service\UserLocationService'
+            $em: '@doctrine.orm.entity_manager'
         tags:
-            - { name: 'kernel.event_listener', event: 'kernel.controller', method: 'onKernelController' }
-    
+            - { name: 'console.command' }
+              
+    App\Service\ConfigService:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+
+    App\Twig\ConfigExtension:
+        tags: ['twig.extension']
+
     App\EventSubscriber\LocaleSubscriber:
         arguments:
             $defaultLocale: '%kernel.default_locale%'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+    
+    App\EventSubscriber\UserSubscriber:
         tags:
             - { name: 'kernel.event_subscriber' }

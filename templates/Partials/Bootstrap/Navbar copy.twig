@@ -1,0 +1,112 @@
+{% set ColorVersion = GetConfig('Site_Theme') %}
+
+	<nav class="navbar navbar-expand-lg navbar-{{ ColorVersion }} fixed-top bg-{{ ColorVersion }}" data-bs-theme="{{ ColorVersion }}">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="{{ absolute_url(path('index')) }}"><img class="image-align" src="{{ absolute_url(asset('Images/logo_min.png')) }}" alt="Logo Galactic-Shrine mini" style="height: 25px;"/></a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav me-auto mb-2 mb-md-0">
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="{{ absolute_url(path('app_index')) }}">{{ "Nav.Home" | trans }}</a>
+							</li>
+							{#<li class="nav-item">
+								<a class="nav-link" href="{{ absolute_url(path('app_member_index')) }}">{{ "Nav.Members" | trans }}</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ absolute_url(path('app_forum_index')) }}">{{ "Nav.Forum" | trans }}</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ absolute_url(path('app_project_index')) }}">{{ "Nav.Projects" | trans }}</a>
+							</li>#}
+{#<li class="nav-item">
+<a class="nav-link disabled">Disabled</a>
+</li>#}
+						</ul>
+						<form class="d-flex" id="searchForm">
+							<div class="input-group">
+								<input class="form-control" type="search" placeholder="{{ "Nav.Search" | trans }}" aria-label="Search">
+								<button class="btn btn-outline-secondary" type="submit">
+									<svg class="bi d-block" width="20" height="20">
+										<use xlink:href="#search"></use>
+									</svg>
+								</button>
+							</div>
+						</form>
+						<ul class="navbar-nav d-flex ms-auto mb-2 mb-lg-0">
+							<li class="nav-item dropdown">
+								<a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+									<svg class="bi" width="24" height="24"><use xlink:href="#bug-fill"></use></svg>
+								</a>
+								<ul class="dropdown-menu" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(40px, 41px);">
+									<li>
+										<a class="dropdown-item" href="{{ absolute_url('/_error/404') }}">404</a>
+									</li>
+								</ul>
+							</li>
+{% if app.user %}
+<pre>
+	{{ dump(app.User.Picture["Type"]) }}
+</pre>
+							<li class="nav-item dropdown">
+								<a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+{% if app.User == null %}
+									<svg class="bi d-block" width="24" height="24"><use xlink:href="#person-circle"></use></svg>
+{% else %}
+{% if app.User.Picture["Type"] == "Uploadable" %}
+{% if app.User.Picture["File"] == 0 %}
+									<svg class="bi d-block" width="24" height="24"><use xlink:href="#person-circle"></use></svg>
+{% else %}
+									<picture>
+										<source srcset="{{ absolute_url(app.User.Picture["File"]) }}" type="image/png">
+										<img src="{{ absolute_url(app.User.Picture["File"]) }}" class="img-fluid img-thumbnail" alt="no avatar">
+									</picture>
+{% endif %}
+{% else %}
+									<picture>
+									  <source srcset="{{ app.User.Email | Gravatar(25) }}" type="image/svg+xml">
+									  <img src="{{ app.User.Email | Gravatar(25) }}" class="rounded-circle" alt="Gravatar">
+									</picture>
+{% endif %}
+
+
+{% if app.User.Picture["Type"] == "GrAvatar" %}
+									<picture>
+									  <source srcset="{{ app.User.Email | Gravatar(25) }}" type="image/svg+xml">
+									  <img src="{{ app.User.Email | Gravatar(25) }}" class="rounded-circle" alt="Gravatar">
+									</picture>
+{% else if app.User.Picture["Type"] == "Uploadable" %}
+									<picture>
+										<source srcset="{{ absolute_url(app.User.Picture["File"]) }}" type="image/png">
+										<img src="{{ absolute_url(app.User.Picture["File"]) }}" class="img-fluid img-thumbnail" alt="no avatar">
+									</picture>
+{% endif %}
+
+
+{% endif %}
+								</a>
+								<ul class="dropdown-menu {#dropdown-menu-{{ ColorVersion }}#} text-small shadow mt-2"  data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 33px);">
+									<li>
+										<a class="dropdown-item" href="{{ absolute_url(path('app_user_profile')) }}">{{ "Nav.MyAccount" | trans }}</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item" href="{{ absolute_url(path('oauth_logout')) }}">{{ "Nav.Logout" | trans ({}, 'OAuth') }}</a>
+									</li>
+								</ul>
+							</li>
+{% else %}
+							<li class="nav-item">
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ absolute_url(path('oauth_login')) }}">{{ "Nav.Connections" | trans({}, 'OAuth') }}</a>
+							</li>
+							{#<li class="nav-item">
+								<a class="nav-link" href="{{ absolute_url(path('oauth_github_login')) }}">Github Connections</a>
+							</li>#}
+{% endif %}
+						</ul>
+					</div>
+				</div>
+			</nav>

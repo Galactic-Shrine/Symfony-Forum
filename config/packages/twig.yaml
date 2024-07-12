@@ -1,4 +1,8 @@
 twig:
+    paths:
+        '%kernel.project_dir%/templates': ~
+        '%kernel.project_dir%/templates/Partials/Bootstrap': Bootstrap
+        '%kernel.project_dir%/templates/Partials': Default
     file_name_pattern: '*.twig'
     globals:
         locales: '%app.locales%'

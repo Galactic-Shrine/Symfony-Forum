@@ -1,0 +1,72 @@
+// Cette classe est déjà présente dans la barre de navigation Bootstrap. Il n'est pas nécessaire de l'ajouter manuellement
+// Donner une couleur de fond transparente à la navbar
+// 0.2 pour donner un petit effet blanchâtre. 
+
+.navbar.bg-primary, .footer.bg-primary {
+
+  background: rgba(var(--bs-primary-rgb), 0.5) !important;
+  z-index: 2;
+  backdrop-filter: blur(10px) saturate(125%);
+}
+
+.navbar.bg-secondary, .footer.bg-secondary {
+
+  background: rgba(var(--bs-secondary-rgb), 0.5) !important;
+  z-index: 2;
+  backdrop-filter: blur(10px) saturate(125%);
+}
+
+.navbar.bg-white, .footer.bg-white {
+
+  background: rgba(var(--bs-white-rgb), 0.5) !important;
+  z-index: 2;
+  backdrop-filter: blur(10px) saturate(125%);
+}
+
+.navbar.bg-light, .footer.bg-light {
+
+  background: rgba(var(--bs-light-rgb), 0.5) !important;
+  z-index: 2;
+  backdrop-filter: blur(10px) saturate(125%);
+}
+
+.navbar.bg-dark, .footer.bg-dark {
+
+  background: rgba(var(--bs-dark-rgb), 0.5) !important;
+  z-index: 2;
+  backdrop-filter: blur(10px) saturate(125%);
+
+  // Le code ci-dessous n'est nécessaire que si vous avez un menu déroulant dans la barre de navigation et que vous voulez changer ses couleurs avant et arrière
+  //.navbar-nav {
+    
+  //  > li { 
+
+  //    > .dropdown-menu { 
+        
+  //      background-color: var(--bs-dark-rgb); 
+  //      color: var(--bs-nav-link-color);
+  //      > li {
+
+  //        > a.dropdown-item {
+
+  //          background-color: var(--bs-dark-rgb); 
+  //          color: var(--bs-nav-link-color);
+  //          //color: var(--bs-white-rgb);
+  //        }
+  //        > a.dropdown-item:hover { 
+
+            //background-color: var(--bs-dark-rgb); 
+            //color: var(--bs-nav-link-color);
+  //          background-color: var(--bs-white-rgb); 
+  //          color: var(--bs-white-rgb);
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
+}
+
+.bi {
+  vertical-align: -0.125em;
+  fill: currentColor;
+}

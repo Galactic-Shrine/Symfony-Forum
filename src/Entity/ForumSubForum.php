@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Config\AutoSlug;
+use App\Functionality\AutoSlug;
 use App\Entity\ForumThread;
 use App\Repository\ForumSubForumRepository;
 use Doctrine\DBAL\Types\Types;
@@ -64,7 +64,7 @@ class ForumSubForum
 
 		if(empty($this->Slug)) { 
 
-			$this->Slug = AutoSlug::convert($this->Name); 
+			$this->Slug = AutoSlug::toSlugPreserveCase($this->Name); 
 		}
 
 		return $this;

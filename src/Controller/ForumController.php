@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController, Symfony\Component\HttpFoundation\Response, 
-    Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response; 
+Use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(name: 'app_forum_')]
 class ForumController extends AbstractController

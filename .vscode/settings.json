@@ -36,4 +36,40 @@
   "workbench.iconTheme": "material-icon-theme",
   "php.version": "8.3",
   "CodeGPT.apiKey": "CodeGPT Plus Beta",
+  "liveSassCompile.settings.formats": [
+    // This is the default.
+    {
+        "format": "expanded",
+        "extensionName": ".css",
+
+        // null for all three -> denotes the same path as the SASS file
+        "savePathReplacementPairs": {
+          "/assets/Scss": "/assets/Css"
+      }
+    },
+    // You can add more
+    {
+        "format": "compressed",
+        "extensionName": ".min.css",
+
+        // / -> denotes relative to the workspace root
+        "savePathReplacementPairs": {
+          "/assets/Scss": "/assets/Css"
+      }
+    }
+  ],
+  "liveSassCompile.settings.partialsList": [
+    "/**/_*.s[ac]ss",
+    "/_Partials/_*.s[ac]ss",
+    "/**/_Partials/_*.s[ac]ss",
+    "/assets/Scss/_Partials/_*.s[ac]ss",
+    "/**/assets/Scss/_Partials/_*.s[ac]ss"
+  ],
+  "liveSassCompile.settings.watchOnLaunch": true,
+  "liveSassCompile.settings.excludeList": [
+    "/**/node_modules/**",
+    "/.vscode/**",
+    "/.git/**"
+  ],
+  "liveSassCompile.settings.generateMap": true,
 }
