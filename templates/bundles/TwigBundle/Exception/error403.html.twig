@@ -1,0 +1,12 @@
+{% extends '@Default.Bootstrap/Base.twig' %}
+
+{% trans_default_domain 'Error' %}
+
+{% block title %}{{ status_code }} {{ "Forbidden" | trans }}{% endblock %}
+
+{% block body %}
+  <h1 class="text-center">{{ "Forbidden" | trans }}</h1>
+  <center>
+    {{ message }}
+  </center>
+{% endblock %}

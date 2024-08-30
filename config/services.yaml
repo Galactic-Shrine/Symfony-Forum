@@ -1,26 +1,18 @@
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
+imports:
+    - { resource: 'application.yaml' }
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
 parameters:
-    # Langage Parameters
-    app.locales:            [de, en, es, fr, it, ja, th, zh-Hans, zh-Hant]
-    app.fallbacks:          [en, fr, ja, de, es, it, th, ar, zh-Hans, zh-Hant]
+    app.locales:            '%App.Locales.Supported%'
+    app.fallbacks:          '%App.Locales.Fallbacks%'
     app.supported_locales:  '%app.locales%'
     app.default_locale:     '%kernel.default_locale%'
-    # Global Path Parameters
-    Path.Upload:            '%kernel.project_dir%/files/Uploads'
-    Path.Download:          '%kernel.project_dir%/files/Downloads'
-    Path.Gallery:           '%Path.Upload%/Gallery'
-    # Path Parameters
-    Path.D.App:             '%Path.Download%/Applications'
-    Path.D.Source:          '%Path.Download%/Sources'
-    Path.U.Forum:           '%Path.Upload%/Forums'
-    Path.U.User:            '%Path.Upload%/Users'
-    Path.U.G.Image:         '%Path.Gallery%/Images'
-    Path.U.G.Video:         '%Path.Gallery%/Videos'
-    Path.U.G.User:          '%Path.Gallery%/Users'
+    app.admin_email:        '%App.Email.Admin%'
 
 services:
     # default configuration for services in *this* file
@@ -38,26 +30,3 @@ services:
             - '../src/Kernel.php'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Command\LoadDefaultConfigCommand:
-        arguments:
-            $em: '@doctrine.orm.entity_manager'
-        tags:
-            - { name: 'console.command' }
-              
-    App\Service\ConfigService:
-        arguments:
-            $em: '@doctrine.orm.entity_manager'
-
-    App\Twig\ConfigExtension:
-        tags: ['twig.extension']
-
-    App\EventSubscriber\LocaleSubscriber:
-        arguments:
-            $defaultLocale: '%kernel.default_locale%'
-        tags:
-            - { name: 'kernel.event_subscriber' }
-    
-    App\EventSubscriber\UserSubscriber:
-        tags:
-            - { name: 'kernel.event_subscriber' }

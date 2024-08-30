@@ -1,0 +1,42 @@
+{% extends '@Default.Bootstrap/Dashboard.twig' %}
+
+{% block title %}Admin {{ "Category" | trans({}, 'Dashboard') }}{% endblock %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li class="breadcrumb-item active" aria-current="page">{{ "Category" | trans({}, 'Dashboard') }}</li>
+{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('admin_category_new') }}" class="btn btn-sm btn-primary">{{ "Create.New.Category" | trans({}, 'Dashboard') }}</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{{ "Name" | trans({}, 'Dashboard') }}</th>
+                <th scope="col">{{ "Description" | trans({}, 'Dashboard') }}</th>
+                <th scope="col">{{ "Controllers" | trans({}, 'Dashboard') }}</th>
+                <th scope="col">{{ "Order" | trans({}, 'Dashboard') }}</th>
+                <th scope="col">{{ "Actions" | trans({}, 'Dashboard') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td scope="row">{{ category.Name|join(', ') }}</td>
+                    <td>{{ category.Description|join(', ') }}</td>
+                    <td>{{ category.Controllers|join(', ') }}</td>
+                    <td>{{ category.Position }}</td>
+                    <td>
+                        <a href="{{ path('admin_category_edit', { id: category.Id }) }}" class="btn btn-sm btn-primary">{{ "Edit" | trans({}, 'Dashboard') }}</a>
+                        <form method="post" action="{{ path('admin_category_delete', { id: category.Id }) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.Id) }}">
+                            <button type="submit" class="btn btn-sm btn-secondary">{{ "Delete" | trans({}, 'Dashboard') }}</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin_category_new') }}" class="btn btn-sm btn-primary">{{ "Create.New.Category" | trans({}, 'Dashboard') }}</a>
+{% endblock %}

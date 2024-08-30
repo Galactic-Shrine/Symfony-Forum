@@ -7,3 +7,11 @@ controllers:
 index:
     path: /
     controller: App\Controller\MainController::Index
+
+admin_dashboard_index.2:
+    path: /Admin
+    controller: App\Controller\Admin\AdminController::Index
+
+admin_dashboard_index.3:
+    path: /admin
+    controller: App\Controller\Admin\AdminController::Index

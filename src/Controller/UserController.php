@@ -1,72 +1,68 @@
 <?php
 
+/**
+ * @copyright © ⋞Galactic-Shrine⋟ 2020-2024, Tous droits réservés.
+ *
+ * @author ⋞Galactic-Shrine⋟ <support@galactic-shrine.com>
+ * @author James Ramon @GsKizuna <kizuna@galactic-shrine.com>
+ * Ce fichier fait partie du projet Symfony-Forum développé par ⋞Galactic-Shrine⋟ et sa communauté.
+ */
+
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Enum\UserStatus;
-use App\Form\UserStatusType;
-use App\Form\RegistrationFormType;
-use App\Form\ChangePasswordFormType;
-use App\Form\ResetPasswordRequestFormType;
-use App\Service\UserPresenceService;
-use App\Security\AppAuthenticator;
 use App\Security\EmailVerifier;
+use App\Form\ChangePasswordFormType;
+use App\Form\UserStatusFormType;
+use App\Form\RegistrationFormType;
+use App\Form\ResetPasswordRequestFormType;
 use App\Repository\UserRepository;
+use App\Security\AppAuthenticator;
+use App\Service\UserPresenceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
-use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
-use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;  
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 
 class UserController extends AbstractController {
 
+	private ParameterBagInterface $Params;
 	private EmailVerifier $emailVerifier;
-
 	private UserPresenceService $userPresenceService;
-
 	private string $noReplyEmailService;
 
 	use ResetPasswordControllerTrait;
 
-	public function __construct(EmailVerifier $emailVerifier, UserPresenceService $userPresenceService, private TranslatorInterface $translator, 
-		private ResetPasswordHelperInterface $resetPasswordHelper, private EntityManagerInterface $entityManager) {
+	public function __construct(EmailVerifier $emailVerifier, UserPresenceService $userPresenceService, ParameterBagInterface $Params, private TranslatorInterface $translator, 
+	private ResetPasswordHelperInterface $resetPasswordHelper, private EntityManagerInterface $entityManager) {
 
+		$this->Params = $Params;
 		$this->emailVerifier = $emailVerifier;
-		$this->noReplyEmailService = "no-reply@galactic-shrine.com";
+		$this->noReplyEmailService = $this->Params->get('App.Email.NoReply');
 		$this->userPresenceService = $userPresenceService;
 	}
 
-	#region User
-	#[Route(['/Profile', '/profile'], name: 'app_user_profile')]
-    public function Index(): Response {
-
-        return $this->render('User/index.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
-    }
-
-    #[Route(['/Edit/Profile', '/edit/profile'], name: 'app_user_profile_edit')]
-    public function EditProfile(): Response {
-
-        return $this->render('User/index.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
-    }
-
-	#[Route(path: [ '/Login', '/login'], name: 'oauth_login')]
+	#region Login/OAuth
+	#[Route(path: [ '/Login', '/login'], options: ['https' => true], name: 'oauth_login')]
 	public function appLogin(AuthenticationUtils $authenticationUtils): Response {
+		
 		// if ($this->getUser()) {
 		//     return $this->redirectToRoute('target_path');
 		// }
@@ -79,14 +75,50 @@ class UserController extends AbstractController {
 		return $this->render('OAuth/Login.twig', ['last_username' => $lastUsername, 'error' => $error]);
 	}
 
+	#[Route(path: [ '/Login/Ajax', '/login/ajax'], methods: ['POST'], name: 'oauth_login_ajax')]
+	public function ajaxLogin(Request $request, AuthenticationUtils $authenticationUtils): JsonResponse {
+		// Gestion des erreurs d'authentification
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+
+		if ($error) {
+
+			return $this->json(['message' => $this->translator->trans($error->getMessageKey(), $error->getMessageData(), 'security')], Response::HTTP_UNAUTHORIZED);
+		} 
+		
+		// Assurez-vous que la gestion des sessions et de l'authentification est correcte
+		return $this->json(['message' => 'Connexion réussie']);
+	}
+
 	#[Route(path: [ '/Logout', '/logout'], name: 'oauth_logout')]
 	public function logout(): void {
 
 		//throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
 	}
+	#endregion Login/OAuth
+
+	#region User
+	#[IsGranted('ROLE_USER')] 
+	#[Route(['/Profile', '/profile'], name: 'app_user_profile')]
+    public function Index(): Response {
+
+        return $this->render('User/Profile.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
+
+	#[IsGranted('ROLE_USER')]
+    #[Route(['/Edit/Profile', '/edit/profile'], name: 'app_user_profile_edit')]
+    public function EditProfile(): Response {
+
+        return $this->render('User/Profile.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
 	#endregion User
 
 	#region User_Status
+	#[IsGranted('ROLE_USER')]
 	#[Route(['/Edit/Status', '/edit/status'], methods: ['POST'], name: 'app_user_status_edit')]
     public function updateStatus(Request $request): Response {
 
@@ -94,6 +126,7 @@ class UserController extends AbstractController {
         $status = $request->request->get('status');
 
         if (!UserStatus::tryFrom($status)) {
+
             return $this->json(['error' => 'Invalid status'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -102,11 +135,12 @@ class UserController extends AbstractController {
         return $this->json(['status' => 'success']);
     }
 
+	#[IsGranted('ROLE_USER')]
     #[Route(['/Profile/Edit/Status', '/profile/edit/status'], methods: ['GET', 'POST'], name: 'app_user_status_manual_edit')]
     public function manualUpdateStatus(Request $request): Response {
         
         $user = $this->getUser();
-        $form = $this->createForm(UserStatusType::class);
+        $form = $this->createForm(UserStatusFormType::class);
 
         $form->handleRequest($request);
 

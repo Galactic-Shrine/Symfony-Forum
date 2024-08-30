@@ -1,0 +1,20 @@
+{% extends '@Default.Bootstrap/Dashboard.twig' %}
+
+{% block title %}Admin Category{% endblock %}
+
+{% block breadcrumb %}
+{{ parent() }}
+<li class="breadcrumb-item" aria-current="page"><a href="{{ absolute_url(path('admin_category_index')) }}">{{ "Category" | trans({}, 'Dashboard') }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ action }}</li>
+{% endblock %}
+
+{% block body %}
+
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">{{ action }}</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin_category_index') }}">Back to list</a>
+{% endblock %}

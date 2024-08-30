@@ -12,8 +12,35 @@
  * The "importmap:require" command can be used to add new entries to this file.
  */
 return [
-    'app' => [
-        'path' => './assets/app.js',
+    'App' => [
+        'path' => './assets/Js/App.js',
+        'entrypoint' => true,
+    ],
+    'AppBootstrap' => [
+        'path' => './assets/Js/AppBootstrap.js',
+        'entrypoint' => true,
+    ],
+    'DashboardBootstrap' => [
+        'path' => './assets/Js/DashboardBootstrap.js',
+        'entrypoint' => true,
+    ],
+    'AjaxLogin' => [
+        'path' => './assets/Js/AjaxLogin.js',
+        'entrypoint' => true,
+    ],
+    'App-Bootstrap.css' => [
+        'path' => './assets/Css/App-Bootstrap.css',
+        'type' => 'css',
+        'entrypoint' => true,
+    ],
+    'Dashboard.css' => [
+        'path' => './assets/Css/Dashboard.css',
+        'type' => 'css',
+        'entrypoint' => true,
+    ],
+    'bootstrap.css' => [
+        'path' => './assets/Css/Bootstrap/bootstrap.css',
+        'type' => 'css',
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [
@@ -37,5 +64,18 @@ return [
     'bootstrap/dist/css/bootstrap.min.css' => [
         'version' => '5.3.0',
         'type' => 'css',
+    ],
+    'jquery' => [
+        'version' => '3.7.1',
+    ],
+    'toastr' => [
+        'version' => '2.1.4',
+    ],
+    'toastr/build/toastr.min.css' => [
+        'version' => '2.1.4',
+        'type' => 'css',
+    ],
+    'highlight.js' => [
+        'version' => '11.10.0',
     ],
 ];

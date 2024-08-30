@@ -1,0 +1,14 @@
+{% extends '@Default.Bootstrap/Base.twig' %}
+
+{% block body %}
+    <ul>
+        {% for New in News %}
+            <li>
+                <!-- <a href="{#{ path('app_news_detail', {'slug': New.Slug}) }}">{{ New.Title }#}</a> -->
+                <p>{{ New.Title }}</p>
+                <p>{{ New.Contents }}</p>
+                <small>{{ New.CreatedAt|date('Y-m-d H:i') }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

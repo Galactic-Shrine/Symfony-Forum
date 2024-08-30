@@ -1,8 +1,8 @@
-{% set ColorVersion = GetConfig('Site_Theme') %}
-
-	<nav class="navbar navbar-expand-lg navbar-{{ ColorVersion }} fixed-top bg-{{ ColorVersion }}" data-bs-theme="{{ ColorVersion }}">
+{% set SiteName = GetConfig('Name') %}
+{% set ColorVersion = GetConfig('Theme') %}
+			<nav class="navbar navbar-expand-lg navbar-{{ ColorVersion }} fixed-top bg-{{ ColorVersion }}" data-bs-theme="{{ ColorVersion }}">
 				<div class="container-fluid">
-					<a class="navbar-brand" href="{{ absolute_url(path('index')) }}"><img class="image-align" src="{{ absolute_url(asset('Images/logo_min.png')) }}" alt="Logo Galactic-Shrine mini" style="height: 25px;"/></a>
+					<a class="navbar-brand" href="{{ absolute_url(path('index')) }}"><img class="image-align" src="{{ absolute_url(asset('Images/logo_min.png')) }}" alt="Logo {{SiteName}}" style="height: 25px;"/></a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
@@ -19,15 +19,14 @@
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{{ absolute_url(path('app_project_index')) }}">{{ "Nav.Projects" | trans }}</a>
-							</li>#}
-<li class="nav-item">
-<a class="nav-link disabled">Disabled</a>
-</li>
+							</li>#}<li class="nav-item">
+								<a class="nav-link disabled">Disabled</a>
+							</li>
 						</ul>
 						<form class="d-flex" id="searchForm">
 							<div class="input-group">
-								<input class="form-control" type="search" placeholder="{{ "Nav.Search" | trans }}" aria-label="Search">
-								<button class="btn btn-outline-secondary" type="submit">
+								<input class="form-control form-control-sm" type="search" placeholder="{{ "Nav.Search" | trans }}" aria-label="Search">
+								<button class="btn btn-sm btn-outline-secondary" type="submit">
 									<svg class="bi d-block" width="20" height="20">
 										<use xlink:href="#search"></use>
 									</svg>
@@ -81,6 +80,9 @@
 									</picture>
 {% endif %}
 {% endif %}
+{#
+ # User is disconnected
+ #}		
 {% endif %}
 								</a>
 								<ul class="dropdown-menu {#dropdown-menu-{{ ColorVersion }}#} text-small shadow mt-2"  data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 33px);">
@@ -104,6 +106,17 @@
 							</li>#}
 {% endif %}
 						</ul>
+{% if app.User == null %}
+						<form id="LoginForm" class="d-flex" method="POST" action="{{ absolute_url(path('oauth_login_ajax')) }}">
+            				<div class="input-group">
+								<input type="text" name="Email" class="form-control form-control-sm" placeholder="{{ "Input.placeholder.EmailOrUserName" | trans ({}, 'OAuth') }}" aria-label="Username" autocomplete="UserName">
+    							<input type="password" name="Password" class="form-control form-control-sm" placeholder="{{ "Label.Password" | trans ({}, 'OAuth') }}" aria-label="Password" autocomplete="current-password">
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            			        <button class="btn btn-sm btn-outline-success" type="submit">{{ "Button.SignIn" | trans ({}, 'OAuth') }}</button>
+								<input type="checkbox" name="_remember_me" checked="">
+            			    </div>
+            			</form>
+{% endif %}
 					</div>
 				</div>
 			</nav>

@@ -1,5 +1,5 @@
 {# On Includ le template de base #}
-{% extends './Partials/Base.twig' %}
+{% extends '@Default.Bootstrap/Base.twig' %}
 
 {#
     Liste des variable manuel
@@ -7,15 +7,11 @@
 #}
 {% if (app.User) %}
 
-    {% if (app.User.Detail is null) %}
+    {% set profileLink = app.User.UserName %}
 
-		{% set profileLink = app.User.UserName %}
-    {% else %}
+    {% if (app.User.Pseudo is not null) %}
 
-        {% if (app.User.Detail.Pseudo is not null) %}
-
-			{% set profileLink = app.User.Detail.Pseudo ~ "(" ~  app.User.UserName ~ ")" %}
-        {% endif %}
+		{% set profileLink = app.User.Pseudo ~ "(" ~  app.User.UserName ~ ")" %}
     {% endif %}
 
     {# 
@@ -35,7 +31,7 @@
 
 {# Block des meta #}
 {% block meta %}{# On Verifie que l'utilisateur est connecter #}{% if app.user %}
-<meta http-equiv="refresh" content="{{ count }}; url={{ absolute_url(path('app_profile')) }}">
+<meta http-equiv="refresh" content="{{ count }}; url={{ absolute_url(path('app_user_profile')) }}">
 {% endif %}
 {% endblock %}
 
@@ -69,7 +65,7 @@
                         <h5 class="card-title">{{ "Text.Redirection.Title" | trans ({}, 'OAuth') }}</h5>
                         <p class="card-text">
                             {{ "Text.Redirection.Profile.Content" | trans ({
-                                    'ProfileLink': path('app_profile'),
+                                    'ProfileLink': path('app_user_profile'),
                                     'ProfileName': profileLink,
                                     'LogoutLink': path('oauth_logout'),
                                     'Count': count

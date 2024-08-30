@@ -72,4 +72,17 @@
     "/.git/**"
   ],
   "liveSassCompile.settings.generateMap": true,
+  "yaml.schemas": {
+    "file:///c%3A/Users/Kizuna/scoop/apps/vscode/1.91.1/data/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
+    "https://json.schemastore.org/yamllint.json": [
+      "file:///d%3A/Symfony-Forum/translations/User.es.yaml",
+      "file:///d%3A/Symfony-Forum/translations/MessagesConsole.es.yaml"
+    ]
+  },
+  "atlascode.jira.enabled": true,
+  "atlascode.bitbucket.enabled": false,
+  "licenser.license": "MIT",
+  "licenser.projectName": "Symfony-Forum",
+  "licenser.author": "⋞Galactic-Shrine⋟",
+  "licenser.useSingleLineStyle": false,
 }

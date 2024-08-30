@@ -1,49 +1,72 @@
 <?php
+
+/**
+ * @copyright © ⋞Galactic-Shrine⋟ 2020-2024, Tous droits réservés.
+ *
+ * @author ⋞Galactic-Shrine⋟ <support@galactic-shrine.com>
+ * @author James Ramon @GsKizuna <kizuna@galactic-shrine.com>
+ * Ce fichier fait partie du projet Symfony-Forum développé par ⋞Galactic-Shrine⋟ et sa communauté.
+ */
+
 namespace App\Twig;
 
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 
+/**
+ * Extension Twig pour ajouter des filtres et fonctions liés aux intervalles de dates.
+ * 
+ * Cette classe fournit des filtres et des fonctions Twig permettant de calculer
+ * l'intervalle en années entre deux dates. Les filtres et fonctions définis ici
+ * peuvent être utilisés dans les templates Twig pour formater et afficher des
+ * informations sur la différence entre les dates.
+ */
 class DateIntervalExtension extends AbstractExtension {
 
-	public function getFilters(): array {
+    /**
+     * Retourne la liste des filtres Twig disponibles dans cette extension.
+     * 
+     * @return TwigFilter[] Un tableau de filtres Twig
+     */
+    public function getFilters(): array {
 
-		return [
-			// If your filter generates SAFE HTML, you should add a third
-			// parameter: ['is_safe' => ['html']]
-			// Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-			new TwigFilter('Interval', [$this, 'DateInterval'], ['is_safe' => ['html']]),
-			new TwigFilter('interval', [$this, 'DateInterval'], ['is_safe' => ['html']]),
-		];
-	}
+        return [
+            // Filtres pour calculer l'intervalle entre deux dates
+            new TwigFilter(name: 'Interval', callable: [$this, 'DateInterval'], options: ['is_safe' => ['html']]),
+            new TwigFilter(name: 'interval', callable: [$this, 'DateInterval'], options: ['is_safe' => ['html']]),
+        ];
+    }
 
-	public function getFunctions(): array {
+    /**
+     * Retourne la liste des fonctions Twig disponibles dans cette extension.
+     * 
+     * @return TwigFunction[] Un tableau de fonctions Twig
+     */
+    public function getFunctions(): array {
 
-		return [
-			new TwigFunction('Interval', [$this, 'DateInterval']),
-			new TwigFunction('interval', [$this, 'DateInterval']),
-		];
-	}
+        return [
+            // Fonctions pour calculer l'intervalle entre deux dates
+            new TwigFunction(name: 'Interval', callable: [$this, 'DateInterval']),
+            new TwigFunction(name: 'interval', callable: [$this, 'DateInterval']),
+        ];
+    }
 
-	/**
-	 * DateInterval
-	 *
-	 * Cette fonction calcule la différence en années entre deux dates.
-	 *
-	 * @param string $Origin    La date d'origine au format "Y-m-d H:i:s".
-	 * @param string $Target    (Optionnel) La date cible au format "Y-m-d H:i:s". Par défaut, c'est "now".
-	 *
-	 * @return int              La différence en années entre les deux dates.
-	 */
-	public function DateInterval(string $Origin, string $Target = "now"): int {
-		
-		// Créer un objet DateTimeImmutable pour la date d'origine
-		$origin = new \DateTimeImmutable($Origin);
-		// Créer un objet DateTimeImmutable pour la date cible
-		$target = new \DateTimeImmutable($Target);
-		
-		// Calculer la différence en années entre les deux dates et la retourner
-		return $origin->diff($target)->y;//->format("m/d/Y H:i")
-	}
+    /**
+     * Calcule l'intervalle en années entre deux dates.
+     * 
+     * @param string $Origin La date d'origine au format 'Y-m-d'
+     * @param string $Target La date cible au format 'Y-m-d', par défaut 'now'
+     * @return int Le nombre d'années entre les deux dates
+     */
+    public function DateInterval(string $Origin, string $Target = "now"): int {
+
+        // Créer un objet DateTimeImmutable pour la date d'origine
+        $origin = new \DateTimeImmutable(datetime: $Origin);
+        // Créer un objet DateTimeImmutable pour la date cible
+        $target = new \DateTimeImmutable(datetime: $Target);
+        
+        // Calculer la différence en années entre les deux dates et la retourner
+        return $origin->diff(targetObject: $target)->y; //->format("m/d/Y H:i")
+    }
 }

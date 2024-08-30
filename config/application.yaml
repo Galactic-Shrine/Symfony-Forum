@@ -1,0 +1,103 @@
+parameters:
+    #############################
+    # App Parameters            #
+    #############################
+    App.Locales.Default:    en
+    App.Vars.Locales:       '_locale'
+    App.Locales.Supported:  [de, en, es, fr, it, ja, th, zh_Hans, zh_Hant]
+    App.Locales.Fallbacks:  [en, fr, ja, de, es, it, th, ar, zh_Hans, zh_Hant]
+
+    #############################
+    # Email                     #
+    #############################
+    App.Email.Admin:        'kizuna@galactic-shrine.com' # Admin or Web Master
+    App.Email.NoReply:      'no-reply@galactic-shrine.com'
+    App.Email.Support:      'support@galactic-shrine.com'
+
+    #############################
+    # Global Path               #
+    #############################
+    Path.Upload:            '%kernel.project_dir%/files/Uploads'
+    Path.Download:          '%kernel.project_dir%/files/Downloads'
+    Path.Gallery:           '%Path.Upload%/Gallery'
+
+    #############################
+    # Path                      #
+    #############################
+    Path.D.App:             '%Path.Download%/Applications'
+    Path.D.Source:          '%Path.Download%/Sources'
+    Path.U.Forum:           '%Path.Upload%/Forums'
+    Path.U.User:            '%Path.Upload%/Users'
+    Path.U.G.Image:         '%Path.Gallery%/Images'
+    Path.U.G.Video:         '%Path.Gallery%/Videos'
+    Path.U.G.User:          '%Path.Gallery%/Users'
+
+twig:
+    paths:
+        '%kernel.project_dir%/templates': ~
+        '%kernel.project_dir%/templates/Partials/Bootstrap': Bootstrap
+        '%kernel.project_dir%/templates/Partials/Base/Bootstrap': Default.Bootstrap
+        '%kernel.project_dir%/templates/Partials/Base': Default # For your custom template
+
+
+security:
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/Admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/Profile, roles: ROLE_USER }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+services:
+    #############################
+    # Commande                  #
+    #############################
+    App\Command\LoadDefaultConfigCommand:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+        tags:
+            - { name: 'console.command' }
+
+    #############################
+    # Service                   #
+    #############################
+    App\Service\ConfigService:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+            $cache: '@cache.app'
+
+    #############################
+    # Twig                      #
+    #############################
+    App\Twig\Functions\GetConfigExtension:
+        arguments:
+            $configService: '@App\Service\ConfigService'
+        tags: ['twig.extension']
+
+    App\Twig\Filters\PluralizeExtension:
+        tags: ['twig.extension']
+
+    #############################
+    # Event Subscriber          #
+    #############################
+    App\EventSubscriber\LocaleSubscriber:
+        arguments:
+            $defaultLocale: '%kernel.default_locale%'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+    
+    App\EventSubscriber\UserSubscriber:
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+framework:
+    cache:
+        pools:
+            app.cache.config:
+                adapter: cache.app
+
+doctrine:
+    dbal:
+        types:
+            uuid: Symfony\Bridge\Doctrine\Types\UuidType
