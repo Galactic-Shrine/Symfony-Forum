@@ -1,10 +1,22 @@
-Text.Config.Square: 'Carré'
-Text.Config.Rectangle: 'Rectangle'
-Text.Config.GrAvatar: 'GrAvatar'
-Text.Config.Uploadable: 'Téléchargeable'
-Status.Online: 'En ligne'
-Status.Absent: 'Absent'
-Status.Occupied: 'Occupé'
-Status.InGame: 'En jeu'
-Status.Invisible: 'Invisible'
-Status.Offline: 'Hors ligne'
+Text:
+  MyProfile: 'Mon Profil'
+  Config:
+    Square: Carré
+    Rectangle: Rectangle
+    GrAvatar: GrAvatar
+    Uploadable: Téléchargeable
+  LastName: 'Nom de famille :'
+  FirstName: 'Prénom :'
+  Email: 'E-mail'
+  Age: 'Âge :'
+  Role: 'Rôle :'
+  YearsOld: ' Ans'
+  Date:
+    Created: 'Date de création :'
+    Updated: 'Date de mise à jour :'
+Status:
+  Online: 'En ligne'
+  Absent: Absent
+  Occupied: Occupé
+  Invisible: Invisible
+  Offline: 'Hors ligne'

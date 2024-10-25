@@ -20,7 +20,7 @@ use Twig\TwigFilter;
  * Les filtres définis ici permettent de choisir entre une forme singulière et une forme plurielle
  * en fonction de la valeur du compteur, avec des options supplémentaires pour gérer les cas spéciaux.
  */
-class PluraliserExtension extends AbstractExtension {
+class PluralizeExtension extends AbstractExtension {
 
     /**
      * Retourne la liste des filtres Twig disponibles dans cette extension.

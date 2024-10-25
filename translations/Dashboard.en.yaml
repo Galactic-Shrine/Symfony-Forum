@@ -1,2 +1,32 @@
-'Dashboard': 'Dashboard'
-'Back.To.Website': 'Back to website'
+Text:
+  Dashboard: Dashboard
+  Administration: Administration
+  Welcome:
+    To:
+      Your: 
+        Dashboard: 'Welcome to your Dashboard'
+  Category: Category
+  News: News
+  User: User
+  Create: Create
+Title:
+  AdminCategory: 'Category administration'
+Button:
+  See: See
+  Edit: Edit
+  Delete: Delete
+  Create: 
+    New:
+      News: 'Add a News item'
+      Category: 'Create new category'
+Table:
+  Name: Name
+  Description: Description
+  Controllers: Controllers
+  CreateAt: Creation date
+  Order: Order
+  Actions: Actions
+Back:
+  To:
+    Website: 'Back to website'
+    List: 'Back to list'

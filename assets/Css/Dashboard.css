@@ -7,10 +7,8 @@
 /*
  * Sidebar
  */
-
 @media (min-width: 768px) {
   .sidebar .offcanvas-lg {
-    position: -webkit-sticky;
     position: sticky;
     top: 48px;
   }
@@ -18,9 +16,8 @@
     display: block;
   }
 }
-
 .sidebar .nav-link {
-  font-size: .875rem;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
@@ -29,20 +26,19 @@
 }
 
 .sidebar-heading {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 /*
  * Navbar
  */
-
 .navbar-brand {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background-color: var(--bs-indigo);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
 }
 
 .navbar .form-control {
-  padding: .75rem 1rem;
-}
+  padding: 0.75rem 1rem;
+}/*# sourceMappingURL=Dashboard.css.map */

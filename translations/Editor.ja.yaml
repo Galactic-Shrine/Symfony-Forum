@@ -1,3 +1,5 @@
-Text.Align.Left: 左寄せ
-Text.Align.Center: 中央揃え
-Text.Align.Right: 右寄せ
+Text:
+  Align:
+    Left: 左寄せ
+    Center: 中央揃え
+    Right: 右寄せ

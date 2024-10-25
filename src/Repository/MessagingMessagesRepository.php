@@ -10,27 +10,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Messenger;
+use App\Entity\MessagingMessages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Messenger>
+ * @extends ServiceEntityRepository<MessagingMessages>
  *
- * @method Messenger|null find($id, $lockMode = null, $lockVersion = null)
- * @method Messenger|null findOneBy(array $criteria, array $orderBy = null)
- * @method Messenger[]    findAll()
- * @method Messenger[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MessagingMessages|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MessagingMessages|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MessagingMessages[]    findAll()
+ * @method MessagingMessages[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MessengerRepository extends ServiceEntityRepository
+class MessagingMessagesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Messenger::class);
+        parent::__construct($registry, MessagingMessages::class);
     }
 
 //    /**
-//     * @return Messenger[] Returns an array of Messenger objects
+//     * @return MessagingMessages[] Returns an array of MessagingMessages objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -44,7 +44,7 @@ class MessengerRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Messenger
+//    public function findOneBySomeField($value): ?MessagingMessages
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

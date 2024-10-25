@@ -55,6 +55,7 @@ class ConfigService {
         return $this->cache->get(key: 'config_' . $Name, callback: function (ItemInterface $item) use ($Name) {
 
             // Définir le TTL (Time to Live) à 10 minutes
+            // 300 = 5 minutes, 600 = 10 minutes, 900 = 15 minutes, 1200 = 20 minute
             $item->expiresAfter(600);
 
             // Récupérer l'entité Config correspondant au nom spécifié

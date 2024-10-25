@@ -1,20 +1,25 @@
-{% extends '@Default.Bootstrap/Dashboard.twig' %}
+{% extends '@Bootstrap/Dashboard.twig' %}
 
-{% block title %}Admin Category{% endblock %}
+{% block title %}{{ "Title.AdminCategory" | trans ({}, 'Dashboard') }}{% endblock %}
 
 {% block breadcrumb %}
 {{ parent() }}
-<li class="breadcrumb-item" aria-current="page"><a href="{{ absolute_url(path('admin_category_index')) }}">{{ "Category" | trans({}, 'Dashboard') }}</a></li>
-<li class="breadcrumb-item active" aria-current="page">{{ action }}</li>
+<li class="breadcrumb-item" aria-current="page">
+    <a href="{{ absolute_url(path('admin_category_index')) }}">
+        {{ "Text.Category" | trans({}, 'Dashboard') }}
+    </a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">{{ action | trans ({}, 'Dashboard') }}</li>
 {% endblock %}
 
 {% block body %}
-
-
+{% if action == "Text.Create" | trans ({}, 'Dashboard')  %}
+    Create001
+{% endif %}
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <button class="btn">{{ action }}</button>
+        <button class="btn">{{ 'Button.Params' | trans ({'{{ Params }}': action}, 'Dashboard') }}</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('admin_category_index') }}">Back to list</a>
+    <a href="{{ path('admin_category_index') }}">{{ "Back.To.List" | trans ({}, 'Dashboard') }}</a>
 {% endblock %}

@@ -1,3 +1,5 @@
-Text.Align.Left: ชิดซ้าย
-Text.Align.Center: ตรงกลาง
-Text.Align.Right: ชิดขวา
+Text:
+  Align:
+    Left: ชิดซ้าย
+    Center: ตรงกลาง
+    Right: ชิดขวา

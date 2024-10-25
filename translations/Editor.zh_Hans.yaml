@@ -1,3 +1,5 @@
-Text.Align.Left: '左对齐'
-Text.Align.Center: '居中对齐'
-Text.Align.Right: '右对齐'
+Text:
+  Align:
+    Left: '左对齐'
+    Center: '居中对齐'
+    Right: '右对齐'

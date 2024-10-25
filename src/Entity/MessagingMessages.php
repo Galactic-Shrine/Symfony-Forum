@@ -10,7 +10,7 @@
 
 namespace App\Entity;
 
-use App\Repository\MessengerRepository;
+use App\Repository\MessagingMessagesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -19,8 +19,8 @@ use Symfony\Bridge\Doctrine\Types\UuidType;
 /**
  * Représente un message échangé entre utilisateurs.
  */
-#[ORM\Entity(repositoryClass: MessengerRepository::class)]
-class Messenger {
+#[ORM\Entity(repositoryClass: MessagingMessagesRepository::class)]
+class MessagingMessages {
 
     /**
      * Identifiant unique du message.
@@ -38,7 +38,7 @@ class Messenger {
      * 
      * @var User|null
      */
-    #[ORM\ManyToOne(inversedBy: 'MessegerSent')]
+    #[ORM\ManyToOne(inversedBy: 'MessagingSent')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $Sender = null;
 
@@ -47,7 +47,7 @@ class Messenger {
      * 
      * @var User|null
      */
-    #[ORM\ManyToOne(inversedBy: 'MessegerReceived')]
+    #[ORM\ManyToOne(inversedBy: 'MessagingReceived')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $Recipient = null;
 
@@ -84,11 +84,31 @@ class Messenger {
     private ?bool $IsRead = null;
 
     /**
+     * Indique si le message a été supprimé par l'expéditeur.
+     * 
+     * @return bool
+     */
+    #[ORM\Column]
+    private bool $IsDeletedBySender = false;
+
+    /**
+     * Indique si le message a été supprimé par le destinataire.
+     * 
+     * @return bool
+     */
+    #[ORM\Column]
+    private bool $IsDeletedByRecipient = false;
+
+    #[ORM\ManyToOne]
+    private ?MessagingFolder $Folder = null;
+
+    /**
      * Constructeur pour initialiser la date de création.
      */
     public function __construct() {
 
         $this->CreatedAt = new \DateTimeImmutable();
+        $this->IsRead = false;
     }
 
     /**
@@ -236,6 +256,64 @@ class Messenger {
 
         $this->IsRead = $IsRead;
         
+        return $this;
+    }
+
+    /**
+     * Indique si le message a été supprimé par l'expéditeur.
+     * 
+     * @return bool
+     */
+    public function isDeletedBySender(): bool {
+
+        return $this->IsDeletedBySender;
+    }
+
+    /**
+     * Définit si le message a été supprimé par l'expéditeur.
+     * 
+     * @param bool $IsRead
+     * @return static
+     */
+    public function setDeletedBySender(bool $IsDeletedBySender): static {
+
+        $this->IsDeletedBySender = $IsDeletedBySender;
+        
+        return $this;
+    }
+
+    /**
+     * Indique si le message a été supprimé par le destinataire.
+     * 
+     * @return bool
+     */
+    public function isDeletedByRecipient(): bool {
+
+        return $this->IsDeletedByRecipient;
+    }
+
+    /**
+     * Définit si le message a été supprimé par le destinataire.
+     * 
+     * @param bool $IsRead
+     * @return static
+     */
+    public function setDeletedByRecipient(bool $IsDeletedByRecipient): static {
+
+        $this->IsDeletedByRecipient = $IsDeletedByRecipient;
+        
+        return $this;
+    }
+
+    public function getFolder(): ?MessagingFolder
+    {
+        return $this->Folder;
+    }
+
+    public function setFolder(?MessagingFolder $Folder): static
+    {
+        $this->Folder = $Folder;
+
         return $this;
     }
 }

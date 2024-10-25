@@ -1,10 +1,12 @@
-Text.Config.Square: 'مربع'
-Text.Config.Rectangle: 'مستطيل'
-Text.Config.GrAvatar: 'غرافيتار'
-Text.Config.Uploadable: 'قابل للتحميل'
-Status.Online: 'متصل'
-Status.Absent: 'غائب'
-Status.Occupied: 'مشغول'
-Status.InGame: 'في اللعبة'
-Status.Invisible: 'غير مرئي'
-Status.Offline: 'غير متصل'
+Text:
+  Config:
+    Square: 'مربع'
+    Rectangle: 'مستطيل'
+    GrAvatar: 'غرافيتار'
+    Uploadable: 'قابل للتحميل'
+Status:
+  Online: 'متصل'
+  Absent: 'غائب'
+  Occupied: 'مشغول'
+  Invisible: 'غير مرئي'
+  Offline: 'غير متصل'

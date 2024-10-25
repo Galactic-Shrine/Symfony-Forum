@@ -1,32 +1,44 @@
-Button.PasswordForgotten: 'Password forgotten'
-Button.Register: Register
-Button.RememberMe: 'Remember me'
-Button.ResetPassword: 'Reset password'
-Button.SendPasswordResetEmail: 'Send password reset email'
-Button.SignIn: 'Sign in'
-Button.SignUp: 'Sign up'
-Flash.EmailConfirmedOk: 'Your email address has been verified.'
-Flash.EmailNotVerify: '<strong>Your email is not verified,</strong> Please verify your email address.'
-Flash.EmailResendVerify: '<strong>Your E-mail is not verified,</strong> <a href="{ link }">Please resend the verification link</a>.'
-Input.placeholder.EmailOrUserName: 'Email or username'
-Label.agreeTerms: 'Agree terms ‎'
-Label.Email: 'E-mail Address'
-Label.Identifier: Identifier
-Label.Password: Password
-Label.UserName: 'User name'
-Nav.Connections: Connections
-Nav.Logout: Logout
-SubTitle.OrUseAThirParty: 'Or use a thir-party'
-Text.CheckEmail: 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in '
-Text.NotReceivedEmail: 'If you don''t receive an email please check your spam folder or <a href="{ link }">try again</a>.'
-Text.Redirection.Header: 'Already logged in'
-Text.Redirection.Profile.Content: 'As <a href="ProfileLink">ProfileName</a>, <br>An automatic redirection will take place in <span id="CrTp">{ Count }</span> seconds. <br>Or <a href="LogoutLink">log out</a>'
-Text.Redirection.Title: 'You are already logged in'
-Text.Reset.EnterYourEmailAddress: 'Enter your email address, and we will send you a link to reset your password.'
-Title.LogIn: 'Log in!'
-Title.Login: Login
-Title.PasswordResetEmailSent: 'Password reset email sent'
-Title.ProfileRedirection: 'Profile Redirection'
-Title.Register: Register
-Title.Registration: Registration
-Title.ResetYourPassword: 'Reset your password'
+Button:
+  PasswordForgotten: 'Password forgotten'
+  Register: Register
+  RememberMe: 'Remember me'
+  ResetPassword: 'Reset password'
+  SendPasswordResetEmail: 'Send password reset email'
+  SignIn: 'Sign in'
+  SignUp: 'Sign up'
+Flash:
+  EmailConfirmedOk: 'Your email address has been verified.'
+  EmailNotVerify: '<strong>Your email is not verified,</strong> Please verify your email address.'
+  EmailResendVerify: '<strong>Your E-mail is not verified,</strong> <a href="{ link }">Please resend the verification link</a>.'
+Input:
+  placeholder:
+    EmailOrUserName: 'Email or username'
+Label:
+  agreeTerms: 'Agree terms ‎'
+  Email: 'E-mail Address'
+  Identifier: Identifier
+  Password: Password
+  UserName: 'User name'
+Nav:
+  Connections: Connections
+  Logout: Logout
+SubTitle:
+  OrUseAThirParty: 'Or use a thir-party'
+Text:
+  CheckEmail: 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in '
+  NotReceivedEmail: 'If you don''t receive an email please check your spam folder or <a href="{ link }">try again</a>.'
+  Redirection:
+    Header: 'Already logged in'
+    Profile:
+      Content: 'As <a href="ProfileLink">ProfileName</a>, <br>An automatic redirection will take place in <span id="CrTp">{ Count }</span> seconds. <br>Or <a href="LogoutLink">log out</a>'
+    Title: 'You are already logged in'
+  Reset:
+    EnterYourEmailAddress: 'Enter your email address, and we will send you a link to reset your password.'
+Title:
+  LogIn: 'Log in!'
+  Login: Login
+  PasswordResetEmailSent: 'Password reset email sent'
+  ProfileRedirection: 'Profile Redirection'
+  Register: Register
+  Registration: Registration
+  ResetYourPassword: 'Reset your password'

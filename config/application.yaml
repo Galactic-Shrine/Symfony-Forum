@@ -4,8 +4,8 @@ parameters:
     #############################
     App.Locales.Default:    en
     App.Vars.Locales:       '_locale'
-    App.Locales.Supported:  [de, en, es, fr, it, ja, th, zh_Hans, zh_Hant]
-    App.Locales.Fallbacks:  [en, fr, ja, de, es, it, th, ar, zh_Hans, zh_Hant]
+    App.Locales.Supported:  [de, en, es, fr, it, ja, th, zh_hans, zh_hant]
+    App.Locales.Fallbacks:  [en, fr, ja, de, es, it, th, ar, zh_hans, zh_hant]
 
     #############################
     # Email                     #
@@ -35,9 +35,12 @@ parameters:
 twig:
     paths:
         '%kernel.project_dir%/templates': ~
-        '%kernel.project_dir%/templates/Partials/Bootstrap': Bootstrap
-        '%kernel.project_dir%/templates/Partials/Base/Bootstrap': Default.Bootstrap
         '%kernel.project_dir%/templates/Partials/Base': Default # For your custom template
+        '%kernel.project_dir%/templates/Partials/Base/Svg': Svg
+        '%kernel.project_dir%/templates/Partials/Base/Admin': Default.Admin
+        # for Bootstrap
+        '%kernel.project_dir%/templates/Partials/Bootstrap': Bootstrap
+        '%kernel.project_dir%/templates/Partials/Bootstrap/Admin': Bootstrap.Admin
 
 
 security:

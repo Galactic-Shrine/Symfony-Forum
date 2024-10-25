@@ -26,7 +26,7 @@ $(() => {
 			type: 'POST',
 			url: $(this).attr('action'),
 			contentType: 'application/json',
-      		data: JSON.stringify(data),
+	  		data: JSON.stringify(data),
 			success: (response) => {
 
 				console.log('Réponse AJAX :', response); // Consigner la réponse
@@ -40,9 +40,9 @@ $(() => {
 
 				if (xhr.responseJSON && xhr.responseJSON.message) {
 					
-        		  errorMessage = xhr.responseJSON.message;
-        		}
-        		toastr.error(errorMessage);
+				  errorMessage = xhr.responseJSON.message;
+				}
+				toastr.error(errorMessage);
 			}
 		});
 	});

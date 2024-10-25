@@ -10,6 +10,7 @@
 
 namespace App\Security;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +70,7 @@ class EmailVerifier {
      * de contexte nécessaires à l'e-mail, puis envoie l'e-mail de confirmation.
      * 
      * @param string $verifyEmailRouteName Le nom de la route pour la vérification de l'e-mail
-     * @param UserInterface $user L'utilisateur pour lequel envoyer l'e-mail de confirmation
+     * @param User $user L'utilisateur pour lequel envoyer l'e-mail de confirmation
      * @param TemplatedEmail $email L'e-mail de confirmation à envoyer
      * 
      * @return void
@@ -104,7 +105,7 @@ class EmailVerifier {
      * marque l'utilisateur comme vérifié, et sauvegarde les changements dans la base de données.
      * 
      * @param Request $request La requête contenant l'URL de confirmation
-     * @param UserInterface $user L'utilisateur dont l'adresse e-mail doit être confirmée
+     * @param User $user L'utilisateur dont l'adresse e-mail doit être confirmée
      * 
      * @return void
      * 
@@ -113,11 +114,17 @@ class EmailVerifier {
     public function handleEmailConfirmation(Request $request, UserInterface $user): void {
 
         // Valider la confirmation de l'e-mail
-        $this->verifyEmailHelper->validateEmailConfirmation(
-            signedUrl: $request->getUri(),
+        $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
+            request: $request,
             userId: $user->getId(),
             userEmail: $user->getEmail()
         );
+
+        /*$this->verifyEmailHelper->validateEmailConfirmation(
+            signedUrl: $request->getUri(),
+            userId: $user->getId(),
+            userEmail: $user->getEmail()
+        );*/
 
         // Marquer l'utilisateur comme vérifié
         $user->setIsVerified(IsVerified: true);

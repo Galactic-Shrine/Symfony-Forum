@@ -1,30 +1,35 @@
-Var.Rtl: 'false'
-Labels.Years: Años
-Labels.Months: Meses
-Labels.Weeks: Semanas
-Labels.Days: Días
-Labels.Hours: Horas
-Labels.Minutes: Minutos
-Labels.Seconds: Segundos
-Labels.Year: Año
-Labels.Month: Mes
-Labels.Week: Semana
-Labels.Day: Día
-Labels.Hour: Hora
-Labels.Minute: Minuto
-Labels.Second: Segundo
-Labels.Compact.Year: a
-Labels.Compact.Month: m
-Labels.Compact.Week: s
-Labels.Compact.Day: d
-Time.Separator: ':'
-Digits.Zero: 0
-Digits.One: 1
-Digits.Two: 2
-Digits.Three: 3
-Digits.Four: 4
-Digits.Five: 5
-Digits.Six: 6
-Digits.Seven: 7
-Digits.Eight: 8
-Digits.Nine: 9
+Var:
+  Rtl: 'false'
+Labels:
+  Years: Años
+  Months: Meses
+  Weeks: Semanas
+  Days: Días
+  Hours: Horas
+  Minutes: Minutos
+  Seconds: Segundos
+  Year: Año
+  Month: Mes
+  Week: Semana
+  Day: Día
+  Hour: Hora
+  Minute: Minuto
+  Second: Segundo
+  Compact:
+    Year: a
+    Month: m
+    Week: s
+    Day: d
+Time:
+  Separator: ':'
+Digits:
+  Zero: 0
+  One: 1
+  Two: 2
+  Three: 3
+  Four: 4
+  Five: 5
+  Six: 6
+  Seven: 7
+  Eight: 8
+  Nine: 9

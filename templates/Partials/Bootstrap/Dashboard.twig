@@ -1,0 +1,56 @@
+{% set SiteName = GetConfig('Name') %}
+{% set ColorVersion = GetConfig('Theme') %}
+
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" class="h-100" data-bs-theme="{{ ColorVersion }}">
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title %}{{ "Text.Administration" | trans({}, 'Dashboard') }}{% endblock %} :: {{ SiteName }}</title>
+		{% block meta %}
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		{% endblock %}
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>Gs</text></svg>">
+		{% block stylesheets %}{% endblock %}
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap(['DashboardBootstrap']) }}
+			{% endblock %}
+		{% endblock %}
+
+	</head>
+	<body class="d-flex flex-column h-100">
+{# Navbar #}
+		{% include '@Bootstrap.Admin/Navbar.twig' %}
+		<main class="container-fluid h-100">
+			<section class="row h-100">
+{# Nav Menu #}
+				{% include '@Bootstrap.Admin/Menu.twig' %}
+				<section class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+{# Breadcrumb #}
+					<section class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+{% block breadcrumb %}
+								<li class="breadcrumb-item">
+									<a href="{{ absolute_url(path('admin_dashboard_index')) }}">
+										{{ "Text.Dashboard" | trans({}, 'Dashboard') }}
+									</a>
+								</li>
+								{% endblock %}
+							</ol>
+						</nav>
+					</section>
+					{# Body/Contenue #}
+					{% block body %}{% endblock %}
+				</section>
+			</section>
+		</main>
+		{% include '@Bootstrap/Modal.twig' %}
+		<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">{% block svg %}
+			{% include '@Svg/Brand.twig' %}
+			{% include '@Svg/People.twig' %}
+			{% include '@Svg/Communications.twig' %}
+			{% include '@Svg/RealWorld.twig' %}
+		{% endblock %}</svg>
+	</body>
+</html>

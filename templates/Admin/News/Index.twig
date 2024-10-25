@@ -1,0 +1,43 @@
+{% extends '@Bootstrap/Dashboard.twig' %}
+
+{% block title %}Liste des News{% endblock %}
+
+{% block breadcrumb %}
+{{ parent() }}<li class="breadcrumb-item active" aria-current="page">{{ "Text.News" | trans({}, 'Dashboard') }}</li>
+{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin_news_new') }}" class="btn btn-primary mb-3">{{ "Button.Create.New.News" | trans({}, 'Dashboard') }}</a>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>{{ "Table.Name" | trans({}, 'Dashboard') }}</th>
+                <th>Slug</th>
+                <th>{{ "Table.CreateAt" | trans({}, 'Dashboard') }}</th>
+                <th>{{ "Table.Actions" | trans({}, 'Dashboard') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for news in newsList %}
+                <tr>
+                    <td>{{ news.Title }}</td>
+                    <td>{{ news.Slug }}</td>
+                    <td>{{ news.CreatedAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('admin_news_show', {id: news.Id}) }}" class="btn btn-info btn-sm">{{ "Button.See" | trans({}, 'Dashboard') }}</a>
+                        <a href="{{ path('admin_news_edit', {id: news.Id}) }}" class="btn btn-warning btn-sm">{{ "Button.Edit" | trans({}, 'Dashboard') }}</a>
+                        <form method="post" action="{{ path('admin_news_delete', {id: news.Id}) }}" style="display:inline-block;" onsubmit="return confirm('Confirmer la suppression ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ news.Id) }}">
+                            <button class="btn btn-danger btn-sm">{{ "Button.Delete" | trans({}, 'Dashboard') }}</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucune News trouvée</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin_news_new') }}" class="btn btn-primary mb-3">{{ "Button.Create.New.News" | trans({}, 'Dashboard') }}</a>
+{% endblock %}

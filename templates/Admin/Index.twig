@@ -1,5 +1,6 @@
-{% extends '@Default.Bootstrap/Dashboard.twig' %}
+{% extends '@Bootstrap/Dashboard.twig' %}
 
+{% block title %}{{ "Text.Dashboard" | trans({}, 'Dashboard') }} :: {{ parent() }}{% endblock %}
 {% block body %}
-    <h1>Welcome to your Dashboard</h1>
+    <h1>{{ "Text.Welcome.To.Your.Dashboard" | trans({}, 'Dashboard') }}</h1>
 {% endblock %}

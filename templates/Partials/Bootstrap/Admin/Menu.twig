@@ -1,0 +1,38 @@
+<menu class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary h-100">
+				  <section class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+				    <section class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+				      <ul class="nav flex-column">
+				        <li class="nav-item">
+				          <a class="nav-link d-flex align-items-center gap-2" aria-current="page" href="{{ absolute_url(path('index')) }}">
+				            <svg class="bi"><use xlink:href="#house-fill"/></svg>
+				            {{ "Back.To.Website" | trans({}, 'Dashboard') }}
+				          </a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link d-flex align-items-center gap-2" href="{{ absolute_url(path('admin_category_index')) }}">
+				            <svg class="bi"><use xlink:href="#tag"/></svg>
+				            {{ "Text.Category" | trans({}, 'Dashboard') }}
+				          </a>
+				        </li>
+						<li class="nav-item">
+				          <a class="nav-link d-flex align-items-center gap-2" href="{{ absolute_url(path('admin_news_index')) }}">
+				            <svg class="bi"><use xlink:href="#tag"/></svg>
+				            {{ "Text.News" | trans({}, 'Dashboard') }}
+				          </a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link d-flex align-items-center gap-2" href="#">
+				            <svg class="bi"><use xlink:href="#people"/></svg>
+				            {{ "Text.User" | trans({}, 'Dashboard') }}
+				          </a>
+				        </li>
+				      </ul>
+				      <!--<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+				        <span>
+				          <svg class="bi"><use xlink:href="#people"/></svg> User
+				        </span>
+				      </h6>
+				      <hr class="my-3">-->
+				    </section>
+				  </section>
+				</menu>

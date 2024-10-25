@@ -35,7 +35,6 @@
   },
   "workbench.iconTheme": "material-icon-theme",
   "php.version": "8.3",
-  "CodeGPT.apiKey": "CodeGPT Plus Beta",
   "liveSassCompile.settings.formats": [
     // This is the default.
     {
@@ -73,10 +72,8 @@
   ],
   "liveSassCompile.settings.generateMap": true,
   "yaml.schemas": {
-    "file:///c%3A/Users/Kizuna/scoop/apps/vscode/1.91.1/data/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
     "https://json.schemastore.org/yamllint.json": [
-      "file:///d%3A/Symfony-Forum/translations/User.es.yaml",
-      "file:///d%3A/Symfony-Forum/translations/MessagesConsole.es.yaml"
+      "file:///d%3A/Symfony-Forum/translations/*.*.yaml"
     ]
   },
   "atlascode.jira.enabled": true,

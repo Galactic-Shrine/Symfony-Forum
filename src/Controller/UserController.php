@@ -119,20 +119,27 @@ class UserController extends AbstractController {
 
 	#region User_Status
 	#[IsGranted('ROLE_USER')]
-	#[Route(['/Edit/Status', '/edit/status'], methods: ['POST'], name: 'app_user_status_edit')]
-    public function updateStatus(Request $request): Response {
+	#[Route(['/Edit/Status={status}', '/edit/status={status}'], name: 'app_user_status_edit')]
+    public function updateStatus($status, Request $request): Response {
 
         $user = $this->getUser();
-        $status = $request->request->get('status');
 
         if (!UserStatus::tryFrom($status)) {
 
-            return $this->json(['error' => 'Invalid status'], Response::HTTP_BAD_REQUEST);
+			$this->addFlash('error', $this->translator->trans('Flash.Invalid.Status', domain: 'User'));
+
+			// On revient sur la page précédente
+			return $this->redirect($request->headers->get('referer'));
+			//return $this->json(data: ['error' => 'Invalid status'], Response::HTTP_BAD_REQUEST);
         }
 
         $this->userPresenceService->updateStatus($user, UserStatus::from($status));
 
-        return $this->json(['status' => 'success']);
+		$this->addFlash('success', $this->translator->trans('Flash.StatusUpdatedSuccessfully', domain: 'User'));
+
+		// On revient sur la page précédente
+		return $this->redirect($request->headers->get('referer'));
+        //return $this->json(['status' => 'success']);
     }
 
 	#[IsGranted('ROLE_USER')]

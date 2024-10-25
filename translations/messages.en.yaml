@@ -1,3 +1,7 @@
-Nav.Home: Home
-Nav.Search: Search
-Text.Footer.Copyright: 'All rights reserved.'
+Nav:
+  Home: Home
+  Search: Search
+Text:
+  Footer:
+    Copyright: 'All rights reserved.'
+  Private: Private

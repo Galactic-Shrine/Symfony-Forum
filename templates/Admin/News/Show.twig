@@ -1,0 +1,16 @@
+{% extends '@Bootstrap/Dashboard.twig' %}
+
+{% block title %}Détails de la News{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">{{ news.Title }}</h1>
+    <p><strong>Slug :</strong> {{ news.Slug }}</p>
+    <p><strong>Date de création :</strong> {{ news.CreatedAt|date('d/m/Y') }}</p>
+    <p><strong>Contenu :</strong> {{ news.Contents }}</p>
+    {% if news.ContentsContinued %}
+        <p><strong>Contenu Suite :</strong> {{ news.ContentsContinued }}</p>
+    {% endif %}
+    <a href="{{ path('admin_news_index') }}" class="btn btn-secondary">Retour à la liste</a>
+</div>
+{% endblock %}

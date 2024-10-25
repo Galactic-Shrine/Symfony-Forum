@@ -66,6 +66,9 @@ class LoadDefaultConfigCommand extends Command {
         $defaultConfigs = [
             ['Name' => 'Site_Name', 'Value' => 'Symfony Forum'],
             ['Name' => 'Site_Theme', 'Value' => 'dark'],
+            ['Name' => 'Link_Youtube', 'Value' => null],
+            ['Name' => 'Link_Github', 'Value' => null],
+            ['Name' => 'Link_Facebook', 'Value' => null],
         ];
 
         // Parcourir chaque configuration par défaut
@@ -73,7 +76,7 @@ class LoadDefaultConfigCommand extends Command {
 
             // Vérifier si la configuration existe déjà dans la base de données
             $existingConfig = $this->em->getRepository(className: Config::class)->findOneBy(
-                [
+                criteria: [
                     'Name' => $configData['Name']
                 ]
             );

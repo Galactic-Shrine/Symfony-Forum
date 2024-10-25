@@ -11,18 +11,26 @@
 namespace App\Service;
 
 use App\Repository\CategoryRepository;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
  
 class CategoryService {
 
-    private ParameterBagInterface $Params;
-    protected string $LocaleVars;
+    private ?string $LocaleVars;
     private CategoryRepository $CategoryRepository;
 
-    public function __construct(ParameterBagInterface $Params, CategoryRepository $CategoryRepository) {
+    public function __construct(CategoryRepository $CategoryRepository, RequestStack $requestStack) {
         
-        $this->Params = $Params;
-        $this->LocaleVars = $this->Params->get('App.Vars.Locales');
+        // Récupère la requête courante et la locale active
+        $currentRequest = $requestStack->getCurrentRequest();
+        if ($currentRequest) {
+
+            $this->LocaleVars = $currentRequest->getLocale(); // ex: 'en', 'fr'
+        } else {
+
+            // Si pas de requête active, utilise une valeur par défaut
+            $this->LocaleVars = 'en'; // Valeur par défaut si aucune locale trouvée
+        }
+
         $this->CategoryRepository = $CategoryRepository;
     }
 
@@ -37,9 +45,11 @@ class CategoryService {
             $Description = $Category->getDescriptionByLang($this->LocaleVars);
                 
             $FilteredCategory[] = [
+                'Id' => $Category->getId(),
                 'Name' => $Name,
                 'Description' => $Description,
                 'Data' => $Category->getData(),
+                'Controllers' => $Category->getControllers(),
                 'Slug' => $Category->getSlug(),
                 'Position' => $Category->getPosition(),
             ];

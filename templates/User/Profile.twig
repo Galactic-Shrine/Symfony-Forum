@@ -1,20 +1,159 @@
-{% extends '@Default.Bootstrap/Base.twig' %}
+{% extends '@Bootstrap/Site.twig' %}
+{# Variable #}
+{% set AvatarSizeWidth = 200 %}
+{% set AvatarSizeHeight = 200 %}
+{% set AvatarMaxSizeHeight = 270 %}
+{% set GrAvatarSize = 200 %}
+{% set CountRoles = -1 %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% for nc in app.User.Roles %}
+    {% set CountRoles = CountRoles + 1 %}
+{% endfor %}
+{# EndVariable #}
+
+{# Page #}
+{% block title %}{{ "Text.MyProfile" | trans([], 'User') }}{% endblock %}
 
 {% block body %}
-		<style>
-			.example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-			.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-		</style>
+			<div class="row mb-2">
+				<div class="col-md-10">
+					<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+							<h4 class="mb-2 text-white">
+{% if (app.User.Pseudo is null) %}
+								{{ app.User.UserName }}
+{% else %}
+								{{ app.User.Pseudo }} <span class="text-white" style="font-size: 11px;">({{ app.User.UserName }})</span>
+{% endif %}
+{#{% if app.User.Detail.Pays == null %}
+{% else %}
 
-		<div class="example-wrapper">
-			<h1>Hello ! {{ controller_name }} ✅</h1>
+								<img src="{{absolute_url(asset('Images/Flags/{{app.User.Detail.Pays}}.png'))}}" class="image-align border border-white" style="width: 20px;" alt="Pays {{ app.User.Detail.Pays }}">
+{% endif %}#}
+							</h4>
+							<table class="table table-responsive">
+							<tbody>
+								<tr>
+									<th scope="row">» Id  <span class="text-white" style="font-size: 11px;">({{ "Text.Private" | trans }})</span>:</th>
+									<td>
+										<span class="spolier">
+											{{ app.User.Id  }}
+										</span>
+									</td>
+								</tr>
+{% if app.User.LastName is not null %}
+								<tr>
+									<th scope="row">» {{ "Text.LastName"  | trans([], 'User')  }}</th>
+									<td>
+										{{ app.User.LastName  }}
+									</td>
+								</tr>
+{% endif %}
+{% if app.User.FirstName is not empty %}
+								<tr>
+									<th scope="row">» {{ "Text.FirstName"  | trans([], 'User')  }}</th>
+									<td>
+{% for Prenom in app.User.FirstName %}
+										{{ Prenom | lower | capitalize }} 
+{% endfor %}
+									</td>
+								</tr>
+{% endif %}
+{% if app.User.Birthday is not empty %}
 
-			This friendly message is coming from:
-			<ul>
-				<li>Your controller at <code><a href="{{ './src/Controller/UserController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-				<li>Your template at <code><a href="{{ './templates/User/index.twig'|file_link(0) }}">templates/index.twig</a></code></li>
-			</ul>
-		</div>
+							<tr>
+								<th scope="row">» {{ "Text.Age" | trans([], 'User') }}</th>
+								<td>
+								{{ app.User.Birthday | date("m/d/Y H:i") | Interval }}{{ "Text.YearsOld" | trans([], 'User') }}
+								</td>
+							</tr>
+{% endif %}
+								<tr>
+									<th scope="row">
+										» {{ "Text.Email" | trans([], 'User') }} <span class="text-white" style="font-size: 11px;">({{ "Text.Private" | trans }})</span>:
+									</th>
+									{% set mails = app.User.Email|split('.') %}
+									<td>
+										<span class="spolier">
+											{{ app.User.Email }}
+										</span>
+									</td>
+								</tr>
+{#{% if app.User.DetailUtilisateurs.IsVisibleMail == true %}
+							<tr>
+								<th scope="row">
+									» Email :
+								</th>
+								<td>{{ app.User.Detail.Mail }}</td>
+							</tr>
+{% endif %}
+{% if app.User.Detail.Pays == null %}
+{% else %}
+							<tr>
+								<th scope="row">» Pays :</th>
+								<td>
+									<img src="Images/Flags/{{app.User.Detail.Pays}}.png" style="width: 17px;" alt="Pays {{ app.User.Detail.Pays }}"> {{ app.User.Detail.Pays }}
+								</td>
+							</tr>
+{% endif %}#}
+{% if CountRoles >= 1 %}
+{% set RoleColor = {
+		'ROLE_USER': "--bs-green",
+		'ROLE_GAME_MASTER': "--bs-yellow",
+  	'ROLE_ADMIN': "--bs-cyan",
+  	'ROLE_SUPER_ADMIN': "--bs-purple"
+	 }
+%}
+							<tr>
+								<th scope="row">» {{ "Text.Role" | trans([], 'User') }}</th>
+								<td>
+{% for Roles in app.User.Roles %}
+									<span style="color: var({{ RoleColor[Roles] }})">{{ Roles | trans | replace({'ROLE_': '', '_': ' '}) | lower | capitalize }}</span><br>
+{% endfor %}
+								</td>
+							</tr>
+{% else %}
+{% endif %}
+							<tr>
+								<th scope="row">» {{ "Text.Date.Created" | trans([], 'User') }}</th>
+								<td>
+{% if app.request.locale == 'fr' %}
+                  {{ app.User.CreateAt is empty ? "" : app.User.CreateAt | format_datetime('full', 'short') | replace({':': 'h'}) }}
+{% else %}
+                  {{ app.User.CreateAt is empty ? "" : app.User.CreateAt | format_datetime('full', 'short') }}
+{% endif %}
+								</td>
+							</tr>
+{% if (app.User.UpdateAt is not empty) %}
+							<tr>
+								<th scope="row">
+									» {{ "Text.Date.Updated" | trans([], 'User') }}
+								</th>
+								<td>
+{% if app.request.locale == 'fr' %}
+                  {{ app.User.UpdateAt is empty ? "" : app.User.UpdateAt| format_datetime('full', 'short') | replace({':': 'h'}) }}
+{% else %}
+                  {{ app.User.UpdateAt is empty ? "" : app.User.UpdateAt | format_datetime('full', 'short') }}
+{% endif %}
+								</td>
+							</tr>
+{% endif %}
+							</tbody>
+						</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+{% if app.User.Picture.Type == "Uploadable" %}
+	{% if app.User.Picture.File == null %}
+					<picture>
+					  <source srcset="{{ absolute_url('Images/noavatar.png') }}" type="image/png">
+					  <img src="{{ absolute_url(asset('Images/noavatar.png')) }}" class="img-fluid img-thumbnail rounded-3" alt="no avatar">
+					</picture>
+	{% else %}
+	{% endif %}
+{% endif %}
+				</div>
+			</div>
 {% endblock %}
+{# EndPage #}

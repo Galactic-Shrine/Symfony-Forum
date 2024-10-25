@@ -1,3 +1,5 @@
-Text.Align.Left: 'مُحاذٍ إلى اليسار'
-Text.Align.Center: 'مُحاذٍ في الوسط'
-Text.Align.Right: 'مُحاذٍ إلى اليمين'
+Text:
+  Align:
+    Left: 'مُحاذٍ إلى اليسار'
+    Center: 'مُحاذٍ في الوسط'
+    Right: 'مُحاذٍ إلى اليمين'

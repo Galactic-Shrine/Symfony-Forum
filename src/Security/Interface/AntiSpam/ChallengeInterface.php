@@ -16,7 +16,7 @@ namespace App\Security\Interface\AntiSpam;
  * Cette interface définit les méthodes nécessaires pour générer, vérifier et récupérer
  * les réponses à des défis anti-spam, tels que les CAPTCHAs ou autres mécanismes de validation.
  */
-interface ChallmableInterface {
+interface ChallengeInterface {
 
     /**
      * Génère une clé unique pour un nouveau défi anti-spam.

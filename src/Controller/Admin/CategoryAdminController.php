@@ -3,13 +3,14 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Form\CategoryType;
+use App\Form\CategoryFormType;
 use App\Service\CategoryService;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -21,7 +22,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route(['/Admin/Category', '/admin/category'], name: 'admin_category_')]
 class CategoryAdminController extends AbstractController {
 
-    private $categoryService;
+    private CategoryService $CategoryService;
+
+    public function __construct(CategoryService $CategoryService,private TranslatorInterface $translator, private EntityManagerInterface $entityManager) {
+	
+        $this->CategoryService = $CategoryService;
+    }
 
     /**
      * Affiche la liste des catégories.
@@ -30,14 +36,15 @@ class CategoryAdminController extends AbstractController {
      * @return Response La réponse HTTP avec la vue affichant les catégories.
      */
     #[Route('/', name: 'index')]
-    public function index(CategoryRepository $categoryRepository, CategoryService $categoryService): Response {
+    public function index(CategoryRepository $categoryRepository): Response {
+
         // Récupère toutes les catégories
         $categories = $categoryRepository->findAll();
 
         // Rend la vue avec les catégories
         return $this->render('Admin/Category/Index.twig', [
-            'categories' => $categories,
-            //'categories' => $this->categoryService->getByLang() ?? [],
+            //'categories' => $categories,
+            'categories' => $this->CategoryService->getByLang() ?? [],
         ]);
     }
 
@@ -52,7 +59,7 @@ class CategoryAdminController extends AbstractController {
     public function new(Request $request, EntityManagerInterface $entityManager): Response {
 
         $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
+        $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         // Vérifie si le formulaire est soumis et valide
@@ -72,7 +79,7 @@ class CategoryAdminController extends AbstractController {
         // Rend la vue avec le formulaire de création
         return $this->render('Admin/Category/Form.twig', [
             'form' => $form->createView(),
-            'action' => 'Create',
+            'action' => $this->translator->trans('Text.Create', domain: 'Dashboard'),
         ]);
     }
 
@@ -87,7 +94,7 @@ class CategoryAdminController extends AbstractController {
     #[Route(['/Edit/{id}', '/edit/{id}'], name: 'edit')]
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response {
 
-        $form = $this->createForm(CategoryType::class, $category);
+        $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         // Vérifie si le formulaire est soumis et valide
@@ -106,7 +113,7 @@ class CategoryAdminController extends AbstractController {
         // Rend la vue avec le formulaire de modification
         return $this->render('Admin/Category/Form.twig', [
             'form' => $form->createView(),
-            'action' => 'Edit',
+            'action' => $this->translator->trans('Text.Edit', domain: 'Dashboard'),
         ]);
     }
 

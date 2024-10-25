@@ -12,17 +12,23 @@ namespace App\Service;
 
 use App\Repository\NewsRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
- 
+use Symfony\Component\HttpFoundation\RequestStack;
+
 class NewsService {
 
-    private ParameterBagInterface $Params;
-    protected string $LocaleVars;
+    private ?string $LocaleVars;
     private NewsRepository $NewsRepository;
 
-    public function __construct(ParameterBagInterface $Params, NewsRepository $NewsRepository) {
+    public function __construct(NewsRepository $NewsRepository, RequestStack $requestStack) {
         
-        $this->Params = $Params;
-        $this->LocaleVars = $this->Params->get('App.Vars.Locales');
+        // Récupère la requête courante et la locale active
+        $currentRequest = $requestStack->getCurrentRequest();
+        if ($currentRequest) {
+            $this->LocaleVars = $currentRequest->getLocale(); // ex: 'en', 'fr'
+        } else {
+            // Si pas de requête active, utilise une valeur par défaut
+            $this->LocaleVars = 'en'; // Valeur par défaut si aucune locale trouvée
+        }
         $this->NewsRepository = $NewsRepository;
     }
 
@@ -40,6 +46,7 @@ class NewsService {
             if ($Title !== null && $Contents !== null) {
                 
                 $FilteredNews[] = [
+                    'Id' => $News->getId()->toRfc4122(), // Ajout de l'ID
                     'Title' => $Title,
                     'Contents' => $Contents,
                     'Slug' => $News->getSlug(),
@@ -52,19 +59,22 @@ class NewsService {
     }
 
     public function getNewsByLang(): array {
-
+  
         $NewsList = $this->NewsRepository->findAll();
+        //dump($NewsList); // Affiche les news récupérées depuis la base de données
+
         $FilteredNews = [];
 
         foreach ($NewsList as $News) {
 
-            $Title = $News->getTitleByLang($this->LocaleVars);
+            $Title = $News->getTitleByLang("$this->LocaleVars");
             $Contents = $News->getContentsByLang($this->LocaleVars);
             $ContentsContinued = $News->getContentsContinuedByLang($this->LocaleVars);
 
             if ($Title !== null && $Contents !== null) {
 
                 $FilteredNews[] = [
+                    'Id' => $News->getId(), // Ajout de l'ID
                     'Title' => $Title,
                     'Contents' => $Contents,
                     'ContentsContinued' => $ContentsContinued,

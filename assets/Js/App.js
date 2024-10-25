@@ -11,5 +11,18 @@ import CanvasConfetti from 'canvas-confetti';
 
 document.body.addEventListener('click', () => {
 
-  CanvasConfetti();
+	CanvasConfetti();
 });
+
+function verif(ViewName) {
+
+	var etat = document.getElementById('CheckForView').checked;
+	
+	if (etat) {
+
+		document.getElementById(ViewName).style.visibility = 'visible';
+	} else {
+		
+		document.getElementById(ViewName).style.visibility = 'hidden';
+	}
+}

@@ -10,7 +10,7 @@
 
 namespace App\Security\AntiSpam\Puzzle;
 
-use App\Security\Interface\AntiSpam\ChallmableInterface;
+use App\Security\Interface\AntiSpam\ChallengeInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * Cette classe fournit une méthode pour générer, vérifier et obtenir des réponses pour
  * un défi de puzzle anti-spam. Les puzzles sont stockés dans la session de l'utilisateur.
  */
-class PuzzuleChallenge implements ChallmableInterface {
+class PuzzleChallenge implements ChallengeInterface {
 
     /**
      * Largeur du puzzle en pixels.
@@ -132,7 +132,7 @@ class PuzzuleChallenge implements ChallmableInterface {
             name: self::SESSION_KEY, 
             value: array_filter(
                 array: $puzzles, 
-                callback: fn(array $puzzle) => $puzzle["Key"] === intval($key)
+                callback: fn(array $puzzle) => $puzzle["Key"] === intval($Key)
             )
         );
 

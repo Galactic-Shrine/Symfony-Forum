@@ -1,0 +1,10 @@
+{% extends '@Bootstrap/Site.twig' %}
+
+
+{% block title %}Edit Profile {{ app.User.UsersTag }}{% endblock %}
+
+{% block body %}
+    {{ form_start(profileForm) }}
+
+    {{ form_end(profileForm) }}
+{% endblock %}

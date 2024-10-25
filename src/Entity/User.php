@@ -290,22 +290,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     private \DateTimeImmutable $CreateAt;
     #endregion
 
-    #region Messenger
+    #region Messaging
     /**
      * Messages envoyés par l'utilisateur.
      * 
-     * @var Collection<Uuid, Messenger>
+     * @var Collection<Uuid, MessagingMessages>
      */
-    #[ORM\OneToMany(targetEntity: Messenger::class, mappedBy: 'Sender', orphanRemoval: true)]
-    private Collection $MessegerSent;
+    #[ORM\OneToMany(targetEntity: MessagingMessages::class, mappedBy: 'Sender', orphanRemoval: true)]
+    private Collection $MessagingSent;
 
     /**
      * Messages reçus par l'utilisateur.
      * 
-     * @var Collection<Uuid, Messenger>
+     * @var Collection<Uuid, MessagingMessages>
      */
-    #[ORM\OneToMany(targetEntity: Messenger::class, mappedBy: 'Recipient', orphanRemoval: true)]
-    private Collection $MessegerReceived;
+    #[ORM\OneToMany(targetEntity: MessagingMessages::class, mappedBy: 'Recipient', orphanRemoval: true)]
+    private Collection $MessagingReceived;
+
+    /**
+     * @var Collection<int, MessagingFolder>
+     */
+    #[ORM\ManyToMany(targetEntity: MessagingFolder::class, mappedBy: 'User')]
+    private Collection $MessagingFolders;
     #endregion
 
     public function __construct() {
@@ -317,9 +323,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
             "Style" => AvatarStyle::Square,
             "File" => null
         ];
-        $this->MessegerSent = new ArrayCollection();
-        $this->MessegerReceived = new ArrayCollection();
+        $this->MessagingSent = new ArrayCollection();
+        $this->MessagingReceived = new ArrayCollection();
         $this->CreateAt = new \DateTimeImmutable;
+        $this->MessagingFolders = new ArrayCollection();
     }
 
     #region User Classic
@@ -407,9 +414,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
      * 
      * @return array
      */
-    public function getFirstName(): array {
+    public function getFirstName(): ?array {
 
-        return array_unique($this->FirstName);
+        return $this->FirstName ? array_unique($this->FirstName) : [];
     }
 
     /**
@@ -418,7 +425,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
      * @param array $FirstName Tableau de prénoms.
      * @return static
      */
-    public function setFirstName(array $FirstName): static {
+    public function setFirstName(?array $FirstName): static {
 
         $this->FirstName = $FirstName;
 
@@ -1000,29 +1007,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     }
     #endregion
 
-    #region Messenger
+    #region Messaging Messages
     /**
      * Retourne les messages envoyés par l'utilisateur.
      * 
-     * @return Collection<Uuid, Messenger>
+     * @return Collection<Uuid, MessagingMessages>
      */
-    public function getMessegerSent(): Collection {
+    public function getMessagingSent(): Collection {
 
-        return $this->MessegerSent;
+        return $this->MessagingSent;
     }
 
     /**
      * Ajoute un message envoyé par l'utilisateur.
      * 
-     * @param Messenger $messegerSent Message envoyé.
+     * @param MessagingMessages $MessagingSent Message envoyé.
      * @return static
      */
-    public function addMessegerSent(Messenger $messegerSent): static {
+    public function addMessagingSent(MessagingMessages $MessagingSent): static {
 
-        if (!$this->MessegerSent->contains($messegerSent)) {
+        if (!$this->MessagingSent->contains($MessagingSent)) {
 
-            $this->MessegerSent->add($messegerSent);
-            $messegerSent->setSender($this);
+            $this->MessagingSent->add(element: $MessagingSent);
+            $MessagingSent->setSender($this);
         }
 
         return $this;
@@ -1031,16 +1038,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * Supprime un message envoyé par l'utilisateur.
      * 
-     * @param Messenger $messegerSent Message envoyé.
+     * @param MessagingMessages $MessagingSent Message envoyé.
      * @return static
      */
-    public function removeMessegerSent(Messenger $messegerSent): static {
+    public function removeMessagingSent(MessagingMessages $MessagingSent): static {
 
-        if ($this->MessegerSent->removeElement($messegerSent)) {
+        if ($this->MessagingSent->removeElement($MessagingSent)) {
 
-            if ($messegerSent->getSender() === $this) {
+            if ($MessagingSent->getSender() === $this) {
 
-                $messegerSent->setSender(null);
+                $MessagingSent->setSender(null);
             }
         }
 
@@ -1050,25 +1057,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * Retourne les messages reçus par l'utilisateur.
      * 
-     * @return Collection<Uuid, Messenger>
+     * @return Collection<Uuid, MessagingMessages>
      */
-    public function getMessegerReceived(): Collection {
+    public function getMessagingReceived(): Collection {
 
-        return $this->MessegerReceived;
+        return $this->MessagingReceived;
     }
 
     /**
      * Ajoute un message reçu par l'utilisateur.
      * 
-     * @param Messenger $messegerReceived Message reçu.
+     * @param MessagingMessages $MessagingReceived Message reçu.
      * @return static
      */
-    public function addMessegerReceived(Messenger $messegerReceived): static {
+    public function addMessagingReceived(MessagingMessages $MessagingReceived): static {
 
-        if (!$this->MessegerReceived->contains($messegerReceived)) {
+        if (!$this->MessagingReceived->contains($MessagingReceived)) {
 
-            $this->MessegerReceived->add($messegerReceived);
-            $messegerReceived->setRecipient($this);
+            $this->MessagingReceived->add($MessagingReceived);
+            $MessagingReceived->setRecipient($this);
         }
 
         return $this;
@@ -1077,17 +1084,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * Supprime un message reçu par l'utilisateur.
      * 
-     * @param Messenger $messegerReceived Message reçu.
+     * @param MessagingMessages $MessagingReceived Message reçu.
      * @return static
      */
-    public function removeMessegerReceived(Messenger $messegerReceived): static {
+    public function removeMessagingReceived(MessagingMessages $MessagingReceived): static {
 
-        if ($this->MessegerReceived->removeElement($messegerReceived)) {
+        if ($this->MessagingReceived->removeElement($MessagingReceived)) {
 
-            if ($messegerReceived->getRecipient() === $this) {
+            if ($MessagingReceived->getRecipient() === $this) {
 
-                $messegerReceived->setRecipient(null);
+                $MessagingReceived->setRecipient(null);
             }
+        }
+
+        return $this;
+    }
+    #endregion
+
+    #region Messaging Folder
+    /**
+     * @return Collection<int, MessagingFolder>
+     */
+    public function getMessagingFolders(): Collection
+    {
+        return $this->MessagingFolders;
+    }
+
+    public function addMessagingFolder(MessagingFolder $messagingFolder): static
+    {
+        if (!$this->MessagingFolders->contains($messagingFolder)) {
+            $this->MessagingFolders->add($messagingFolder);
+            $messagingFolder->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagingFolder(MessagingFolder $messagingFolder): static
+    {
+        if ($this->MessagingFolders->removeElement($messagingFolder)) {
+            $messagingFolder->removeUser($this);
         }
 
         return $this;

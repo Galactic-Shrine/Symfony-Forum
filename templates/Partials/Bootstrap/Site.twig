@@ -1,0 +1,111 @@
+{% set SiteName = GetConfig('Name') %}
+{% set ColorVersion = GetConfig(Name: 'Theme') %}
+{# Social Link #}
+{% set Youtube = GetConfig(Name: 'Youtube', Type: 'Link') %}
+{% set Twitch = GetConfig(Name: 'Twitch', Type: 'Link') %}
+{% set Github = GetConfig(Name: 'Github', Type: 'Link') %}
+{% set X = GetConfig(Name: 'X', Type: 'Link') %}
+{% set Facebook = GetConfig(Name: 'Facebook', Type: 'Link') %}
+{# End Social Link #}
+
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" class="h-100" data-bs-theme="{{ ColorVersion }}">
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title %}{% endblock %} :: {{ SiteName }}</title>
+		{% block meta %}
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		{% endblock %}
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>Gs</text></svg>">
+		{% block stylesheets %}{% endblock %}
+		{% block javascripts %}
+			{% block importmap %}
+				{% if (app.User) %}
+					{{ importmap(['AppBootstrap']) }}
+				{% else %}
+					{{ importmap(['AppBootstrap', 'AjaxLogin']) }}
+				{% endif %}
+			{% endblock %}
+		{% endblock %}
+
+	</head>
+	<body class="d-flex flex-column h-100">
+		<header style="padding-top: 3.9rem;">
+			{% include '@Bootstrap/Navbar.twig' %}
+		</header>
+		<main class="container h-100">
+			{% block body %}{% endblock %}
+		</main>
+		<footer class="footer mt-auto d-flex flex-wrap justify-content-between align-items-center py-3 bg-{{ ColorVersion }}">
+			<div class="col-md-7 d-flex align-items-center">
+				<span class="ms-3">
+					© {{ "now"|date("Y") }}, {{ SiteName }} - {{ "Text.Footer.Copyright" | trans }}
+				</span>
+			</div>
+			<ul class="nav col-md-3 justify-content-end list-unstyled d-flex align-items-center">
+				<li class="ms-2">
+					<a class="link" href="" data-bs-toggle="modal" data-bs-target="#translateModal">
+						<svg class="bi" width="20" height="20">
+							<use xlink:href="#translate"></use>
+						</svg>
+					</a>
+				</li>
+				{% if Github %}
+				<li class="ms-2">
+					<a class="link-black" href="https://github.com/{{ Github }}">
+						<svg class="bi" width="20" height="20">
+							<use xlink:href="#github"></use>
+						</svg>
+					</a>
+				</li>			
+				{% endif %}
+				{% if Youtube %}
+				<li class="ms-2">
+					<a class="link-danger" href="https://www.youtube.com/{{ Youtube }}">
+						<svg class="bi" width="20" height="20">
+							<use xlink:href="#youtube"></use>
+						</svg>
+					</a>
+				</li>				
+				{% endif %}
+				{% if Twitch %}
+				<li class="ms-2">
+					<a class="link-danger" href="https://www.x.com/{{ Twitch }}">
+						<svg class="bi" width="20" height="20">
+							<use xlink:href="#twitch"></use>
+						</svg>
+					</a>
+				</li>				
+				{% endif %}
+				{% if X %}
+				<li class="ms-2">
+					<a class="link-danger" href="https://www.x.com/{{ X }}">
+						<svg class="bi" width="20" height="20">
+							<use xlink:href="#twitter-x"></use>
+						</svg>
+					</a>
+				</li>				
+				{% endif %}
+				{% if Facebook  %}
+				<li class="ms-2">
+					<a class="link-blue" href="https://www.facebook.com/{{ Facebook }}">
+						<svg class="bi" width="20" height="20">
+							<use xlink:href="#facebook"></use>
+						</svg>
+					</a>
+				</li>				
+				{% endif %}
+				<li class="col-sm-1">
+				</li>	
+			</ul>
+		</footer>
+		{% include '@Bootstrap/Modal.twig' %}
+
+		<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">{% block svg %}
+			{% include '@Svg/Brand.twig' %}
+			{% include '@Svg/People.twig' %}
+			{% include '@Svg/Communications.twig' %}
+			{% include '@Svg/RealWorld.twig' %}
+		{% endblock %}</svg>
+	</body>
+</html>

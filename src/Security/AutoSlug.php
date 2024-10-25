@@ -158,7 +158,7 @@ abstract class AutoSlug {
                 )
             );
 
-            return strtr(string: $string, replace_pairs: self::getTransliteration());
+            return strtr($string, self::getTransliteration());
         } catch (\Exception $e) {
 
             throw new RuntimeException(message: 'Erreur lors de la normalisation de la chaîne : ' . $e->getMessage());

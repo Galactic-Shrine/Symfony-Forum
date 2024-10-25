@@ -1,10 +1,12 @@
-Text.Config.Square: 'Quadrato'
-Text.Config.Rectangle: 'Rettangolo'
-Text.Config.GrAvatar: 'GrAvatar'
-Text.Config.Uploadable: 'Caricabile'
-Status.Online: 'Online'
-Status.Absent: 'Assente'
-Status.Occupied: 'Occupato'
-Status.InGame: 'In gioco'
-Status.Invisible: 'Invisibile'
-Status.Offline: 'Offline'
+Text:
+  Config:
+    Square: 'Quadrato'
+    Rectangle: 'Rettangolo'
+    GrAvatar: 'GrAvatar'
+    Uploadable: 'Caricabile'
+Status:
+  Online: 'Online'
+  Absent: 'Assente'
+  Occupied: 'Occupato'
+  Invisible: 'Invisibile'
+  Offline: 'Offline'

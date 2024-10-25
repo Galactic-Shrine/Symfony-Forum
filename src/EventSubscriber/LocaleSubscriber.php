@@ -71,6 +71,10 @@ class LocaleSubscriber implements EventSubscriberInterface {
 
             // Définit la langue de la requête à partir du paramètre d'URL
             $request->setLocale(locale: $locale);
+        } elseif ($locale = $request->cookies->get('_locale')) {
+
+            //Sinon, vérifie si la langue est stockée dans un cookie
+            $request->setLocale($locale);
         } else {
 
             // Sinon, utilise la langue stockée dans la session ou la langue par défaut

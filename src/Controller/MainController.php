@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request; 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 #[Route(name: 'app_')]
 class MainController extends AbstractController {
@@ -52,9 +53,13 @@ class MainController extends AbstractController {
 		$Request->setLocale($locale);
 		// On stocke la locale dans la session
 		$Request->getSession()->set($this->LocaleVars, $locale);
-		//$Request->setcookie(name: $this->LocaleVars, value: $locale, expires: 0, path: '/', domain:'', secure: false, httponly: true);
+		// Crée un cookie pour la langue avec une durée d'expiration de 1 an
+        $cookie = new Cookie('_locale', $locale, time() + 365 * 24 * 60 * 60);//$Request->setcookie(name: $this->LocaleVars, value: $locale, expires: 0, path: '/', domain:'', secure: false, httponly: true);
 
-		// On revient sur la page précédente
-		return $this->redirect($Request->headers->get('referer'));
+		// Ajoute le cookie à la réponse
+		$response = $this->redirect($Request->headers->get('referer'));
+        $response->headers->setCookie($cookie);
+
+		return $response;
 	}
 }

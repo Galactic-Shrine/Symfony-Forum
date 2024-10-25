@@ -76,6 +76,9 @@ class GetConfigExtension extends AbstractExtension {
         } else if ($Type === "Forum") {
 
             $Prefix = "Forum_";
+        } else if ($Type === "Link") {
+
+            $Prefix = "Link_";
         }
 
 

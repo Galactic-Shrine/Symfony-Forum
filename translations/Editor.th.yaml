@@ -1,3 +1,5 @@
-Text.Align.Left: 'Aligné à gauche'
-Text.Align.Center: 'Aligné au centre'
-Text.Align.Right: 'Aligné à droite'
+Text:
+  Align:
+    Left: 'Aligné à gauche'
+    Center: 'Aligné au centre'
+    Right: 'Aligné à droite'

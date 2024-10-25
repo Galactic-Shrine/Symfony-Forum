@@ -1,30 +1,35 @@
-Var.Rtl: 'true'
-Labels.Years: سنوات
-Labels.Months: أشهر
-Labels.Weeks: أسابيع
-Labels.Days: أيام
-Labels.Hours: ساعات
-Labels.Minutes: دقائق
-Labels.Seconds: ثواني
-Labels.Year: سنة
-Labels.Month: شهر
-Labels.Week: أسبوع
-Labels.Day: يوم
-Labels.Hour: ساعة
-Labels.Minute: دقيقة
-Labels.Second: ثانية
-Labels.Compact.Year: س
-Labels.Compact.Month: ش
-Labels.Compact.Week: أ
-Labels.Compact.Day: ي
-Time.Separator: ':'
-Digits.Zero: ٠
-Digits.One: ١
-Digits.Two: ٢
-Digits.Three: ٣
-Digits.Four: ٤
-Digits.Five: ٥
-Digits.Six: ٦
-Digits.Seven: ٧
-Digits.Eight: ٨
-Digits.Nine: ٩
+Var:
+  Rtl: 'true'
+Labels:
+  Years: سنوات
+  Months: أشهر
+  Weeks: أسابيع
+  Days: أيام
+  Hours: ساعات
+  Minutes: دقائق
+  Seconds: ثواني
+  Year: سنة
+  Month: شهر
+  Week: أسبوع
+  Day: يوم
+  Hour: ساعة
+  Minute: دقيقة
+  Second: ثانية
+  Compact:
+    Year: س
+    Month: ش
+    Week: أ
+    Day: ي
+Time:
+  Separator: ':'
+Digits:
+  Zero: ٠
+  One: ١
+  Two: ٢
+  Three: ٣
+  Four: ٤
+  Five: ٥
+  Six: ٦
+  Seven: ٧
+  Eight: ٨
+  Nine: ٩

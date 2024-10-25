@@ -1,0 +1,33 @@
+Text:
+  Dashboard: 'Tableau de bord'
+  Administration: Administration
+  Welcome:
+    To:
+      Your:
+        Dashboard: 'Bienvenue dans votre tableau de bord'
+  Category: Catégorie
+  News: Actualités
+  User: Utilisateur
+  Create: Créer
+Button:
+  Params: '{{ Params }}'
+  See: Voir
+  Edit: Editer
+  Delete: Supprimer
+  Create:
+    New:
+      Category: 'Créer une nouvelle catégorie'
+      News: 'Ajouter une actualités'
+Title:
+  AdminCategory: 'Administration des Catégorie'
+Table:
+  Name: Nom
+  Description: Description
+  Controllers: Contrôleurs
+  CreateAt: Date de création
+  Order: Ordre
+  Actions: Actions
+Back:
+  To:
+    Website: 'Retour au site web'
+    List: 'Retour à la liste'
