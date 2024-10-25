@@ -5,11 +5,12 @@ namespace App\Controller\Admin;
 use App\Entity\News;
 use App\Form\NewsType;
 use App\Service\NewsService;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route(['/Admin/News', '/admin/news'], name: 'admin_news_')]
 class NewsAdminController extends AbstractController
@@ -52,9 +53,13 @@ class NewsAdminController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(News $news): Response
+    public function show(string $id): Response
     {
-        $newsData = $this->newsService->getNewsByLang();
+        $newsData = $this->newsService->getNewsById(Uuid::fromString($id));
+    
+        if (!$newsData) {
+            throw $this->createNotFoundException('News not found');
+        }
 
         return $this->render('Admin/News/Show.twig', [
             'news' => $newsData,

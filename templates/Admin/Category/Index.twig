@@ -8,8 +8,8 @@
 
 {% block body %}
 
-	<a href="{{ path('admin_category_new') }}" class="btn btn-sm btn-primary">{{ "Button.Create.New.Category" | trans({}, 'Dashboard') }}</a>
-	<table class="table">
+	<a href="{{ path('admin_category_new') }}" class="btn btn-sm btn-primary mb-3">{{ "Button.Create.New.Category" | trans({}, 'Dashboard') }}</a>
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th scope="col">{{ "Table.Name" | trans({}, 'Dashboard') }}</th>
@@ -31,10 +31,10 @@
 				<td>{{ Category.Controllers | join(', ') | trans({}, 'Dashboard') }}</td>
 				<td>{{ Category.Position }}</td>
 				<td>
-					<a href="{{ path('admin_category_edit', { id: Category.Id }) }}" class="btn btn-sm btn-primary">{{ "Button.Edit" | trans({}, 'Dashboard') }}</a>
-					<form method="post" action="{{ path('admin_category_delete', { id: Category.Id }) }}" style="display:inline;">
+					<a href="{{ path('admin_category_edit', { id: Category.Id }) }}" class="btn btn-sm btn-warning">{{ "Button.Edit" | trans({}, 'Dashboard') }}</a>
+					<form method="post" action="{{ path('admin_category_delete', { id: Category.Id }) }}" style="display:inline;" onsubmit="return confirm('Confirmer la suppression ?');">
 						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ Category.Id) }}">
-						<button type="submit" class="btn btn-sm btn-secondary">{{ "Button.Delete" | trans({}, 'Dashboard') }}</button>
+						<button type="submit" class="btn btn-sm btn-danger">{{ "Button.Delete" | trans({}, 'Dashboard') }}</button>
 					</form>
 				</td>
 				{% endif %}
@@ -42,5 +42,5 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<a href="{{ path('admin_category_new') }}" class="btn btn-sm btn-primary">{{ "Button.Create.New.Category" | trans({}, 'Dashboard') }}</a>
+	<a href="{{ path('admin_category_new') }}" class="btn btn-sm btn-primary mt-3">{{ "Button.Create.New.Category" | trans({}, 'Dashboard') }}</a>
 {% endblock %}

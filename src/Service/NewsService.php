@@ -10,9 +10,10 @@
 
 namespace App\Service;
 
+use Symfony\Component\Uid\Uuid;
 use App\Repository\NewsRepository;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class NewsService {
 
@@ -58,32 +59,26 @@ class NewsService {
         return $FilteredNews;
     }
 
-    public function getNewsByLang(): array {
-  
-        $NewsList = $this->NewsRepository->findAll();
-        //dump($NewsList); // Affiche les news récupérées depuis la base de données
+    // Récupérer une seule news par ID
+    public function getNewsById(Uuid $id): ?array {
+        $news = $this->NewsRepository->find($id);
 
-        $FilteredNews = [];
-
-        foreach ($NewsList as $News) {
-
-            $Title = $News->getTitleByLang("$this->LocaleVars");
-            $Contents = $News->getContentsByLang($this->LocaleVars);
-            $ContentsContinued = $News->getContentsContinuedByLang($this->LocaleVars);
-
-            if ($Title !== null && $Contents !== null) {
-
-                $FilteredNews[] = [
-                    'Id' => $News->getId(), // Ajout de l'ID
-                    'Title' => $Title,
-                    'Contents' => $Contents,
-                    'ContentsContinued' => $ContentsContinued,
-                    'Slug' => $News->getSlug(),
-                    'CreatedAt' => $News->getCreatedAt(),
-                ];
-            }
+        if (!$news) {
+            return null; // ou vous pouvez lancer une exception
         }
 
-        return $FilteredNews;
+        // Récupère les données en fonction de la langue courante
+        $title = $news->getTitleByLang($this->LocaleVars);
+        $contents = $news->getContentsByLang($this->LocaleVars);
+        $contentsContinued = $news->getContentsContinuedByLang($this->LocaleVars);
+
+        return [
+            'Id' => $news->getId()->toRfc4122(),
+            'Title' => $title,
+            'Contents' => $contents,
+            'ContentsContinued' => $contentsContinued,
+            'Slug' => $news->getSlug(),
+            'CreatedAt' => $news->getCreatedAt(),
+        ];
     }
 }

@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block body %}
-    <a href="{{ path('admin_news_new') }}" class="btn btn-primary mb-3">{{ "Button.Create.New.News" | trans({}, 'Dashboard') }}</a>
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <a href="{{ path('admin_news_new') }}" class="btn btn-sm btn-primary mb-3">{{ "Button.Create.New.News" | trans({}, 'Dashboard') }}</a>
+    <table class="table table-striped">
+        <thead>
             <tr>
                 <th>{{ "Table.Name" | trans({}, 'Dashboard') }}</th>
                 <th>Slug</th>
@@ -39,5 +39,5 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('admin_news_new') }}" class="btn btn-primary mb-3">{{ "Button.Create.New.News" | trans({}, 'Dashboard') }}</a>
+    <a href="{{ path('admin_news_new') }}" class="btn btn-sm btn-primary mt-3">{{ "Button.Create.New.News" | trans({}, 'Dashboard') }}</a>
 {% endblock %}

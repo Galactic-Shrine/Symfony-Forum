@@ -27,7 +27,7 @@ class NewsController extends AbstractController {
     public function list(): Response {
 
         return $this->render('News/List.twig', [
-            'News' => $this->newsService->getNewsByLang(),
+            'News' => $this->newsService->getListNewsByLang(),
         ]);
     }
 }
